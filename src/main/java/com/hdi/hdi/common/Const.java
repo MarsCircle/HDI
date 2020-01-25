@@ -8,6 +8,7 @@ public class Const {
 
     public static final String USERNAME = "username";
 
+
     public interface Role{
         int ROLE_CUSTOMER = 0; //普通用户
         int ROLE_ADMIN = 1;
@@ -20,4 +21,10 @@ public class Const {
     public static final int ITERATION_INDEX = 0;
     public static final int SALT_INDEX = 1;
     public static final int PBKDF2_INDEX = 2;
+
+
+    
+
+
+
 }

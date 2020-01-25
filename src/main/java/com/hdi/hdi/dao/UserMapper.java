@@ -2,7 +2,8 @@ package com.hdi.hdi.dao;
 
 import com.hdi.hdi.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
+
 
 @Mapper
 public interface UserMapper {
@@ -18,11 +19,15 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    int checkUsername(String username);
+    int checkUsername( String username);
 
-    int checkEmail(String email);
+    int checkEmail(@Param("email") String email);
 
     User selectLogin(@Param("username") String username);
+
+    User selectEmail(@Param("email") String email);
+
+    int activateByEmail(@Param("email") String email);
 
 //    String selectPassword(@Param("username") String username);
 

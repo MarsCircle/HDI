@@ -9,30 +9,35 @@ public class User {
 
     private String password;
 
-    private String salt;
-
     private String email;
 
     private String phone;
 
     private Integer role;
 
+    private Integer status;
+
     private Date createTime;
 
     private Date updateTime;
 
-    public User(Integer id, String username, String password, String salt, String email, String phone, Integer role, Date createTime, Date updateTime) {
+    public User(Integer id, String username, String password, String email, String phone, Integer role, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.salt = salt;
         this.email = email;
         this.phone = phone;
         this.role = role;
+        this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
-
+    public User(String username, String password, String email, String phone) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+    }
     public User() {
         super();
     }
@@ -61,14 +66,6 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt == null ? null : salt.trim();
-    }
-
     public String getEmail() {
         return email;
     }
@@ -91,6 +88,14 @@ public class User {
 
     public void setRole(Integer role) {
         this.role = role;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {

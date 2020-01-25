@@ -1,10 +1,11 @@
-package com.hdi.hdi.util;
+package com.hdi.hdi.util.SaltHash;
 import com.hdi.hdi.common.Const;
-import java.security.SecureRandom;
-import javax.crypto.spec.PBEKeySpec;
+
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 public class PasswordHash
 {
