@@ -67,8 +67,8 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(PasswordHash.createHash(user.getPassword()));
         user.setStatus(0);
         String ValidateCode = PasswordHash.createHash(user.getEmail());
-//        if (checkEmail(user.getEmail(), ValidateCode)) {
-        if (true) { // TODO: 2020/1/25 邮箱激活暂时有点问题，先改成true 
+        if (checkEmail(user.getEmail(), ValidateCode)) {
+//        if (true) { // TODO: 2020/1/25 邮箱激活暂时有点问题，先改成true
             int resultCount = userMapper.insert(user);
             if (resultCount == 0) {
                 return ServerResponse.createByErrorMessage("注册失败");

@@ -1,4 +1,4 @@
-package com.hdi.hdi.controller;
+package com.hdi.hdi.controller.UserLoginRegister;
 
 
 import com.hdi.hdi.common.Const;
@@ -7,12 +7,14 @@ import com.hdi.hdi.pojo.User;
 import com.hdi.hdi.service.IUserService;
 import com.hdi.hdi.util.JWT.CookieUtil;
 import com.hdi.hdi.util.JWT.JwtUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
@@ -39,7 +41,13 @@ public class UserController {
      */
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody //序列化为json
-    public ServerResponse<User> login(HttpServletResponse httpServletResponse, String username , String password , HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ServerResponse<User> login(HttpServletRequest httpServletRequest , HttpServletResponse httpServletResponse, String username , String password , String verificationCode, HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        String verificationCodeIn = (String) httpServletRequest.getSession().getAttribute("verificationCode");
+        httpServletRequest.getSession().removeAttribute("verificationCode");
+        if (StringUtils.isEmpty(verificationCodeIn) || !verificationCodeIn.equals(verificationCode)) {
+            return ServerResponse.createByErrorMessage("验证码错误，或已失效");
+        }
+
         ServerResponse<User> response = iUserService.login(username , password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER , response.getData());
@@ -88,4 +96,9 @@ public class UserController {
     public ServerResponse<String> checkValid(String str , String type){
         return iUserService.checkValid(str ,type);
     }
+
+
+
+
+
 }
