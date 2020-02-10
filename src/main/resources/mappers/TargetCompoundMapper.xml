@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdi.hdi.dao.TargetCompoundMapper" >
+  <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.TargetCompound" >
+    <constructor >
+      <idArg column="target_cmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="target_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="acmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="target_class" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="relation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="species" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="reference" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    target_cmpd_id, target_id, acmpd_id, target_class, relation, species, reference, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from target_compound
+    where target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from target_compound
+    where target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hdi.hdi.pojo.TargetCompound" >
+    insert into target_compound (target_cmpd_id, target_id, acmpd_id, 
+      target_class, relation, species, 
+      reference, create_time, update_time
+      )
+    values (#{targetCmpdId,jdbcType=VARCHAR}, #{targetId,jdbcType=VARCHAR}, #{acmpdId,jdbcType=VARCHAR}, 
+      #{targetClass,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, #{species,jdbcType=VARCHAR}, 
+      #{reference,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.TargetCompound" >
+    insert into target_compound
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="targetCmpdId != null" >
+        target_cmpd_id,
+      </if>
+      <if test="targetId != null" >
+        target_id,
+      </if>
+      <if test="acmpdId != null" >
+        acmpd_id,
+      </if>
+      <if test="targetClass != null" >
+        target_class,
+      </if>
+      <if test="relation != null" >
+        relation,
+      </if>
+      <if test="species != null" >
+        species,
+      </if>
+      <if test="reference != null" >
+        reference,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="targetCmpdId != null" >
+        #{targetCmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetId != null" >
+        #{targetId,jdbcType=VARCHAR},
+      </if>
+      <if test="acmpdId != null" >
+        #{acmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetClass != null" >
+        #{targetClass,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="species != null" >
+        #{species,jdbcType=VARCHAR},
+      </if>
+      <if test="reference != null" >
+        #{reference,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.TargetCompound" >
+    update target_compound
+    <set >
+      <if test="targetId != null" >
+        target_id = #{targetId,jdbcType=VARCHAR},
+      </if>
+      <if test="acmpdId != null" >
+        acmpd_id = #{acmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetClass != null" >
+        target_class = #{targetClass,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        relation = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="species != null" >
+        species = #{species,jdbcType=VARCHAR},
+      </if>
+      <if test="reference != null" >
+        reference = #{reference,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.TargetCompound" >
+    update target_compound
+    set target_id = #{targetId,jdbcType=VARCHAR},
+      acmpd_id = #{acmpdId,jdbcType=VARCHAR},
+      target_class = #{targetClass,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=VARCHAR},
+      species = #{species,jdbcType=VARCHAR},
+      reference = #{reference,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectTargetCompoundByAcmpdId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from target_compound
+    where acmpd_id = #{acmpdId}
+    limit #{page} , 6
+  </select>
+</mapper>

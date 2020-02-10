@@ -3,45 +3,75 @@
 <mapper namespace="com.hdi.hdi.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.User" >
     <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="occupation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name_chinese" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_status" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hdi.hdi.pojo.User" >
+    <constructor >
+      <idArg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="occupation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name_chinese" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_status" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="work_permit" jdbcType="LONGVARBINARY" javaType="_byte[]" />
+    </constructor>
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, username, password, email, phone, role, status, create_time, update_time
+    user_id, username, password, email, occupation, name_chinese, phone, address, company, 
+    role, is_status, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
+  <sql id="Blob_Column_List" >
+    work_permit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from hdi_user
-    where id = #{id,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from hdi_user
-    where id = #{id,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hdi.hdi.pojo.User" >
-    insert into hdi_user (id, username, password,
-      email, phone, role,
-      status, create_time, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER},
-      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+    insert into hdi_user (user_id, username, password, 
+      email, occupation, name_chinese, 
+      phone, address, company, 
+      role, is_status, create_time, 
+      update_time, work_permit)
+    values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{occupation,jdbcType=VARCHAR}, #{nameChinese,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
+      #{role,jdbcType=INTEGER}, #{isStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{workPermit,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.User" >
     insert into hdi_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
+      <if test="userId != null" >
+        user_id,
       </if>
       <if test="username != null" >
         username,
@@ -52,14 +82,26 @@
       <if test="email != null" >
         email,
       </if>
+      <if test="occupation != null" >
+        occupation,
+      </if>
+      <if test="nameChinese != null" >
+        name_chinese,
+      </if>
       <if test="phone != null" >
         phone,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="company != null" >
+        company,
       </if>
       <if test="role != null" >
         role,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="isStatus != null" >
+        is_status,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -67,10 +109,13 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="workPermit != null" >
+        work_permit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
@@ -81,20 +126,35 @@
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
+      <if test="occupation != null" >
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="nameChinese != null" >
+        #{nameChinese,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
       </if>
       <if test="role != null" >
         #{role,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+      <if test="isStatus != null" >
+        #{isStatus,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workPermit != null" >
+        #{workPermit,jdbcType=LONGVARBINARY},
       </if>
     </trim>
   </insert>
@@ -110,14 +170,26 @@
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
+      <if test="occupation != null" >
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="nameChinese != null" >
+        name_chinese = #{nameChinese,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
       </if>
       <if test="role != null" >
         role = #{role,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="isStatus != null" >
+        is_status = #{isStatus,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -125,20 +197,44 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="workPermit != null" >
+        work_permit = #{workPermit,jdbcType=LONGVARBINARY},
+      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hdi.hdi.pojo.User" >
+    update hdi_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      name_chinese = #{nameChinese,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      role = #{role,jdbcType=INTEGER},
+      is_status = #{isStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      work_permit = #{workPermit,jdbcType=LONGVARBINARY}
+    where user_id = #{userId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.User" >
     update hdi_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      name_chinese = #{nameChinese,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
+      is_status = #{isStatus,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
   </update>
 
   <select id="checkUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -152,13 +248,13 @@
   </select>
 
   <select id="selectLogin" parameterType="string" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List" />
-    from hdi_user
-    where username = #{username}
+  SELECT
+  <include refid="Base_Column_List" />
+  from hdi_user
+  where username = #{username}
 
-  </select>
-<!--  resultMap="BaseResultMap  这里写resultType错误-->
+</select>
+  <!--  resultMap="BaseResultMap  这里写resultType错误-->
   <select id="selectEmail" parameterType="string" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />

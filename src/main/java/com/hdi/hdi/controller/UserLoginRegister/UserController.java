@@ -84,10 +84,6 @@ public class UserController {
     @ResponseBody
     public ServerResponse<String> activateUser(String email , String validateCode)  {
         return iUserService.activateUser(email,validateCode);
-
-
-
-
     }
 
 

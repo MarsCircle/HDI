@@ -36,7 +36,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
         User user = userMapper.selectLogin(username);
-        if (user.getStatus() == 1) {
+        if (user.getIsStatus() == (byte) 1) {
             String hash = user.getPassword();
             if (!PasswordHash.validatePassword(password, hash)) { //此处验证是否与加盐hash过的密码一致
                 return ServerResponse.createByErrorMessage("密码错误");
@@ -65,7 +65,7 @@ public class UserServiceImpl implements IUserService {
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //MD5加密
         user.setPassword(PasswordHash.createHash(user.getPassword()));
-        user.setStatus(0);
+        user.setIsStatus((byte) 0);
         String ValidateCode = PasswordHash.createHash(user.getEmail());
         if (checkEmail(user.getEmail(), ValidateCode)) {
 //        if (true) { // TODO: 2020/1/25 邮箱激活暂时有点问题，先改成true
@@ -128,7 +128,7 @@ public class UserServiceImpl implements IUserService {
         //验证用户是否存在
         if (user != null) {
             //验证用户激活状态
-            if (user.getStatus() == 0) {
+            if (user.getIsStatus() == (byte) 0) {
                 ///没激活
                 Date currentTime = new Date();//获取当前时间
                 //验证链接是否过期
@@ -137,7 +137,7 @@ public class UserServiceImpl implements IUserService {
                     try {
                         if (PasswordHash.validatePassword(email, validateCode)) {
                             //激活成功， //并更新用户的激活状态，为已激活
-                            user.setStatus(1);//把状态改为激活
+                            user.setIsStatus((byte) 1);//把状态改为激活
                             userMapper.activateByEmail(email);
 //                            return ServerResponse.createBySuccessMessage("激活成功！");
                         } else {

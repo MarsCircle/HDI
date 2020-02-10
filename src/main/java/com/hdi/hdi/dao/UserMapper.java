@@ -3,23 +3,23 @@ package com.hdi.hdi.dao;
 import com.hdi.hdi.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-
 @Mapper
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long userId);
 
     int insert(User record);
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Integer id);
+    User selectByPrimaryKey(Long userId);
 
     int updateByPrimaryKeySelective(User record);
 
+    int updateByPrimaryKeyWithBLOBs(User record);
+
     int updateByPrimaryKey(User record);
 
-    int checkUsername( String username);
+    int checkUsername(String username);
 
     int checkEmail(@Param("email") String email);
 
@@ -27,8 +27,6 @@ public interface UserMapper {
 
     User selectEmail(@Param("email") String email);
 
-    int activateByEmail(@Param("email") String email);
-
-//    String selectPassword(@Param("username") String username);
+    void activateByEmail(@Param("email") String email);
 
 }

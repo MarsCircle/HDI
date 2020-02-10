@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdi.hdi.dao.HerbMapper" >
+  <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.Herb" >
+    <constructor >
+      <idArg column="herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="chinese_simplified" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="chinese_traditional" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pinyin_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="latin_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="english_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="properties" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="meridians" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="function" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="class_chinese" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="class_english" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="use_part" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    herb_id, chinese_simplified, chinese_traditional, pinyin_name, latin_name, english_name, 
+    properties, meridians, `function`, class_chinese, class_english, use_part, create_time,
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hdi_herb
+    where herb_id = #{herbId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hdi_herb
+    where herb_id = #{herbId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hdi.hdi.pojo.Herb" >
+    insert into hdi_herb (herb_id, chinese_simplified, chinese_traditional, 
+      pinyin_name, latin_name, english_name, 
+      properties, meridians, function, 
+      class_chinese, class_english, use_part, 
+      create_time, update_time)
+    values (#{herbId,jdbcType=VARCHAR}, #{chineseSimplified,jdbcType=VARCHAR}, #{chineseTraditional,jdbcType=VARCHAR}, 
+      #{pinyinName,jdbcType=VARCHAR}, #{latinName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+      #{properties,jdbcType=VARCHAR}, #{meridians,jdbcType=VARCHAR}, #{function,jdbcType=VARCHAR}, 
+      #{classChinese,jdbcType=VARCHAR}, #{classEnglish,jdbcType=VARCHAR}, #{usePart,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.Herb" >
+    insert into hdi_herb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="herbId != null" >
+        herb_id,
+      </if>
+      <if test="chineseSimplified != null" >
+        chinese_simplified,
+      </if>
+      <if test="chineseTraditional != null" >
+        chinese_traditional,
+      </if>
+      <if test="pinyinName != null" >
+        pinyin_name,
+      </if>
+      <if test="latinName != null" >
+        latin_name,
+      </if>
+      <if test="englishName != null" >
+        english_name,
+      </if>
+      <if test="properties != null" >
+        properties,
+      </if>
+      <if test="meridians != null" >
+        meridians,
+      </if>
+      <if test="function != null" >
+        function,
+      </if>
+      <if test="classChinese != null" >
+        class_chinese,
+      </if>
+      <if test="classEnglish != null" >
+        class_english,
+      </if>
+      <if test="usePart != null" >
+        use_part,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="herbId != null" >
+        #{herbId,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseSimplified != null" >
+        #{chineseSimplified,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseTraditional != null" >
+        #{chineseTraditional,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinName != null" >
+        #{pinyinName,jdbcType=VARCHAR},
+      </if>
+      <if test="latinName != null" >
+        #{latinName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="properties != null" >
+        #{properties,jdbcType=VARCHAR},
+      </if>
+      <if test="meridians != null" >
+        #{meridians,jdbcType=VARCHAR},
+      </if>
+      <if test="function != null" >
+        #{function,jdbcType=VARCHAR},
+      </if>
+      <if test="classChinese != null" >
+        #{classChinese,jdbcType=VARCHAR},
+      </if>
+      <if test="classEnglish != null" >
+        #{classEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="usePart != null" >
+        #{usePart,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.Herb" >
+    update hdi_herb
+    <set >
+      <if test="chineseSimplified != null" >
+        chinese_simplified = #{chineseSimplified,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseTraditional != null" >
+        chinese_traditional = #{chineseTraditional,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinName != null" >
+        pinyin_name = #{pinyinName,jdbcType=VARCHAR},
+      </if>
+      <if test="latinName != null" >
+        latin_name = #{latinName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="properties != null" >
+        properties = #{properties,jdbcType=VARCHAR},
+      </if>
+      <if test="meridians != null" >
+        meridians = #{meridians,jdbcType=VARCHAR},
+      </if>
+      <if test="function != null" >
+        function = #{function,jdbcType=VARCHAR},
+      </if>
+      <if test="classChinese != null" >
+        class_chinese = #{classChinese,jdbcType=VARCHAR},
+      </if>
+      <if test="classEnglish != null" >
+        class_english = #{classEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="usePart != null" >
+        use_part = #{usePart,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where herb_id = #{herbId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.Herb" >
+    update hdi_herb
+    set chinese_simplified = #{chineseSimplified,jdbcType=VARCHAR},
+      chinese_traditional = #{chineseTraditional,jdbcType=VARCHAR},
+      pinyin_name = #{pinyinName,jdbcType=VARCHAR},
+      latin_name = #{latinName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      properties = #{properties,jdbcType=VARCHAR},
+      meridians = #{meridians,jdbcType=VARCHAR},
+      function = #{function,jdbcType=VARCHAR},
+      class_chinese = #{classChinese,jdbcType=VARCHAR},
+      class_english = #{classEnglish,jdbcType=VARCHAR},
+      use_part = #{usePart,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where herb_id = #{herbId,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="checkHerb" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from hdi_herb
+    where chinese_simplified = #{chineseSimplified}
+  </select>
+
+  <select id="selectHerb" parameterType="string" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from hdi_herb
+    where chinese_simplified = #{chineseSimplified}
+    AND `class_chinese` = #{classChinese}
+  </select>
+
+
+  <select id="selectHerbId" parameterType="string" resultType="string">
+    SELECT
+    herb_id
+    from hdi_herb
+    where chinese_simplified = #{chineseSimplified}
+    AND `class_chinese` = #{classChinese}
+  </select>
+</mapper>

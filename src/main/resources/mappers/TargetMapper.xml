@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdi.hdi.dao.TargetMapper" >
+  <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.Target" >
+    <constructor >
+      <idArg column="target_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="acmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="target_cmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="gene_symbol" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="alias" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="uniprot_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="species" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    target_id, acmpd_id, target_cmpd_id, gene_symbol, alias, uniprot_id, species, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hdi_target
+    where target_id = #{targetId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hdi_target
+    where target_id = #{targetId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hdi.hdi.pojo.Target" >
+    insert into hdi_target (target_id, acmpd_id, target_cmpd_id, 
+      gene_symbol, alias, uniprot_id, 
+      species, create_time, update_time
+      )
+    values (#{targetId,jdbcType=VARCHAR}, #{acmpdId,jdbcType=VARCHAR}, #{targetCmpdId,jdbcType=VARCHAR}, 
+      #{geneSymbol,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{uniprotId,jdbcType=VARCHAR}, 
+      #{species,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.Target" >
+    insert into hdi_target
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="targetId != null" >
+        target_id,
+      </if>
+      <if test="acmpdId != null" >
+        acmpd_id,
+      </if>
+      <if test="targetCmpdId != null" >
+        target_cmpd_id,
+      </if>
+      <if test="geneSymbol != null" >
+        gene_symbol,
+      </if>
+      <if test="alias != null" >
+        alias,
+      </if>
+      <if test="uniprotId != null" >
+        uniprot_id,
+      </if>
+      <if test="species != null" >
+        species,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="targetId != null" >
+        #{targetId,jdbcType=VARCHAR},
+      </if>
+      <if test="acmpdId != null" >
+        #{acmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetCmpdId != null" >
+        #{targetCmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="geneSymbol != null" >
+        #{geneSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="uniprotId != null" >
+        #{uniprotId,jdbcType=VARCHAR},
+      </if>
+      <if test="species != null" >
+        #{species,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.Target" >
+    update hdi_target
+    <set >
+      <if test="acmpdId != null" >
+        acmpd_id = #{acmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetCmpdId != null" >
+        target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR},
+      </if>
+      <if test="geneSymbol != null" >
+        gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="uniprotId != null" >
+        uniprot_id = #{uniprotId,jdbcType=VARCHAR},
+      </if>
+      <if test="species != null" >
+        species = #{species,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where target_id = #{targetId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.Target" >
+    update hdi_target
+    set acmpd_id = #{acmpdId,jdbcType=VARCHAR},
+      target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR},
+      gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      uniprot_id = #{uniprotId,jdbcType=VARCHAR},
+      species = #{species,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where target_id = #{targetId,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectGeneSymbol" parameterType="string" resultType="string">
+    SELECT
+    gene_symbol
+    from hdi_target
+    where target_id = #{targetId}
+  </select>
+
+
+</mapper>

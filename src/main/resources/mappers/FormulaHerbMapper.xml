@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdi.hdi.dao.FormulaHerbMapper" >
+  <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.FormulaHerb" >
+  <constructor >
+    <idArg column="formula_herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="formula_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="formula_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="herb_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="herb_quantity" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    <arg column="herb_quantity_unit" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+  </constructor>
+</resultMap>
+
+  <sql id="Base_Column_List" >
+    formula_herb_id, formula_id, herb_id, formula_name, herb_name, herb_quantity, herb_quantity_unit, 
+    `source`, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from formula_herb
+    where formula_herb_id = #{formulaHerbId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from formula_herb
+    where formula_herb_id = #{formulaHerbId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hdi.hdi.pojo.FormulaHerb" >
+    insert into formula_herb (formula_herb_id, formula_id, herb_id, 
+      formula_name, herb_name, herb_quantity, 
+      herb_quantity_unit, source, create_time, 
+      update_time)
+    values (#{formulaHerbId,jdbcType=VARCHAR}, #{formulaId,jdbcType=VARCHAR}, #{herbId,jdbcType=VARCHAR}, 
+      #{formulaName,jdbcType=VARCHAR}, #{herbName,jdbcType=VARCHAR}, #{herbQuantity,jdbcType=DECIMAL}, 
+      #{herbQuantityUnit,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.FormulaHerb" >
+    insert into formula_herb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="formulaHerbId != null" >
+        formula_herb_id,
+      </if>
+      <if test="formulaId != null" >
+        formula_id,
+      </if>
+      <if test="herbId != null" >
+        herb_id,
+      </if>
+      <if test="formulaName != null" >
+        formula_name,
+      </if>
+      <if test="herbName != null" >
+        herb_name,
+      </if>
+      <if test="herbQuantity != null" >
+        herb_quantity,
+      </if>
+      <if test="herbQuantityUnit != null" >
+        herb_quantity_unit,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="formulaHerbId != null" >
+        #{formulaHerbId,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaId != null" >
+        #{formulaId,jdbcType=VARCHAR},
+      </if>
+      <if test="herbId != null" >
+        #{herbId,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaName != null" >
+        #{formulaName,jdbcType=VARCHAR},
+      </if>
+      <if test="herbName != null" >
+        #{herbName,jdbcType=VARCHAR},
+      </if>
+      <if test="herbQuantity != null" >
+        #{herbQuantity,jdbcType=DECIMAL},
+      </if>
+      <if test="herbQuantityUnit != null" >
+        #{herbQuantityUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.FormulaHerb" >
+    update formula_herb
+    <set >
+      <if test="formulaId != null" >
+        formula_id = #{formulaId,jdbcType=VARCHAR},
+      </if>
+      <if test="herbId != null" >
+        herb_id = #{herbId,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaName != null" >
+        formula_name = #{formulaName,jdbcType=VARCHAR},
+      </if>
+      <if test="herbName != null" >
+        herb_name = #{herbName,jdbcType=VARCHAR},
+      </if>
+      <if test="herbQuantity != null" >
+        herb_quantity = #{herbQuantity,jdbcType=DECIMAL},
+      </if>
+      <if test="herbQuantityUnit != null" >
+        herb_quantity_unit = #{herbQuantityUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where formula_herb_id = #{formulaHerbId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.FormulaHerb" >
+    update formula_herb
+    set formula_id = #{formulaId,jdbcType=VARCHAR},
+      herb_id = #{herbId,jdbcType=VARCHAR},
+      formula_name = #{formulaName,jdbcType=VARCHAR},
+      herb_name = #{herbName,jdbcType=VARCHAR},
+      herb_quantity = #{herbQuantity,jdbcType=DECIMAL},
+      herb_quantity_unit = #{herbQuantityUnit,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where formula_herb_id = #{formulaHerbId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectFormulaCompose" parameterType="string" resultType="map">
+    SELECT
+    herb_name ,herb_quantity,herb_quantity_unit
+    from formula_herb
+    where formula_name = #{formulaName}
+  </select>
+</mapper>
