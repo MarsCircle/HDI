@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import redis.clients.jedis.Jedis;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
+import java.util.Random;
 
 //import com.hdi.hdi.util.SendEmail;
 
@@ -30,54 +33,56 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public ServerResponse<User> login(String username, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        int resultCount = userMapper.checkUsername(username);
+    public ServerResponse<User> login(String email, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        int resultCount = userMapper.checkEmail(email);
         if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage("用户名不存在");
+            return ServerResponse.createByErrorMessage("该邮箱未注册");
         }
-        User user = userMapper.selectLogin(username);
-        if (user.getIsStatus() == (byte) 1) {
-            String hash = user.getPassword();
-            if (!PasswordHash.validatePassword(password, hash)) { //此处验证是否与加盐hash过的密码一致
-                return ServerResponse.createByErrorMessage("密码错误");
-            }
-            user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
-            return ServerResponse.createBySuccess("登陆成功", user);
-        } else {
-            return ServerResponse.createByErrorMessage("该账号尚未激活，请前往邮箱进行激活");
+        User user = userMapper.selectLogin(email);
+        String hash = user.getPassword();
+        if (!PasswordHash.validatePassword(password, hash)) { //此处验证是否与加盐hash过的密码一致
+            return ServerResponse.createByErrorMessage("密码错误");
         }
+        user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
+        return ServerResponse.createBySuccess("登陆成功", user);
+
     }
 
 
-    public ServerResponse<String> register(String username, String password, String email, String phone) throws InvalidKeySpecException, NoSuchAlgorithmException {
-
-        User user = new User(username, password, email, phone);
-
-        ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
+    public ServerResponse<String> register(String verificationCode , String username, String password, String email, String phone, String occupation,String nameChinese ,String address,String company) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        //判断参数是否为空值
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation) ||StringUtils.isEmpty(company) ) {
+            return ServerResponse.createByErrorMessage("参数不可为空");
+        }
+        //判断邮箱验证码是否有误
+        Jedis jedis = new Jedis();
+        String verificationCodeRight = jedis.get(email + "_verificationCode");
+        if(verificationCodeRight == null){
+            return ServerResponse.createByErrorMessage("邮箱验证码已过期");
+        }
+        if(!verificationCode.equals(verificationCodeRight)){
+            return ServerResponse.createByErrorMessage("邮箱验证码有误！注册失败");
+        }
+        User user = new User(username, password, email, phone, occupation, nameChinese, address, company);
+        //判断邮箱是否已经注册
+        ServerResponse validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
-
-        validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
-        if (!validResponse.isSuccess()) {
-            return validResponse;
-        }
+        //判断用户名是否已存在
+//        validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
+//        if (!validResponse.isSuccess()) {
+//            return validResponse;
+//        }
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //MD5加密
         user.setPassword(PasswordHash.createHash(user.getPassword()));
-        user.setIsStatus((byte) 0);
-        String ValidateCode = PasswordHash.createHash(user.getEmail());
-        if (checkEmail(user.getEmail(), ValidateCode)) {
-//        if (true) { // TODO: 2020/1/25 邮箱激活暂时有点问题，先改成true
-            int resultCount = userMapper.insert(user);
-            if (resultCount == 0) {
-                return ServerResponse.createByErrorMessage("注册失败");
-            }
-            return ServerResponse.createBySuccessMessage("注册成功，请查看邮箱并激活账号");
-        } else {
-            return ServerResponse.createByErrorMessage("激活邮箱发送失败，注册失败");
+        int resultCount = userMapper.insert(user);
+        if (resultCount == 0) {
+            return ServerResponse.createByErrorMessage("注册失败");
         }
-    }
+        return ServerResponse.createBySuccessMessage("注册成功");
+        }
 
 
 
@@ -103,65 +108,36 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-    public boolean checkEmail(String email,String ValidateCode) {
 
-        StringBuffer sb = new StringBuffer("点击下面链接激活账号，48小时生效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>");
-        sb.append("<a href=\"http://localhost:8080/user/register?email=");
-//        sb.append("<a href=\"https:www.baidu.com");
-        sb.append(email);
-        sb.append("&validateCode=");
-        sb.append(ValidateCode);
-        sb.append("\">http://localhost:8080/user/register?email=");
-        sb.append(email);
-        sb.append("&validateCode=");
-        sb.append(ValidateCode);
-        sb.append("</a>");
-        //发送邮件
-        return send(email, sb.toString());
-    }
+    public boolean checkEmail(String email) {
 
-
-    ///传递激活码和email过来
-    public ServerResponse<String> activateUser(String email , String validateCode) {
-        //数据访问层，通过email获取用户信息
-        User user = userMapper.selectEmail(email);
-        //验证用户是否存在
-        if (user != null) {
-            //验证用户激活状态
-            if (user.getIsStatus() == (byte) 0) {
-                ///没激活
-                Date currentTime = new Date();//获取当前时间
-                //验证链接是否过期
-                if (currentTime.before(user.getCreateTime())) {
-                    //验证激活码是否正确
-                    try {
-                        if (PasswordHash.validatePassword(email, validateCode)) {
-                            //激活成功， //并更新用户的激活状态，为已激活
-                            user.setIsStatus((byte) 1);//把状态改为激活
-                            userMapper.activateByEmail(email);
-//                            return ServerResponse.createBySuccessMessage("激活成功！");
-                        } else {
-                            return ServerResponse.createByErrorMessage("激活码不正确");
-                        }
-
-                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    return ServerResponse.createByErrorMessage("激活码已过期！");
-                }
-            } else {
-                return ServerResponse.createBySuccessMessage("邮箱已激活，请登录！");
-            }
-        } else {
-            return ServerResponse.createByErrorMessage("该邮箱未注册（邮箱地址不存在）！");
+        StringBuilder ValidateCode = new StringBuilder();
+        char[] ch = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+        Random random = new Random();
+        for (int i = 0; i <6; i++){
+            char num = ch[random.nextInt(ch.length)];
+            ValidateCode.append(num);
         }
-    return ServerResponse.createBySuccessMessage("激活成功！");
+        Jedis jedis = new Jedis();
+        jedis.setex(email + "_verificationCode", 300, ValidateCode.toString());
+
+        //发送邮件
+        String content = "注册HDI 的邮箱注册码如下" +
+                "邮箱：" +
+                email +
+                "                验证码:" +
+                ValidateCode.toString() ;
+
+        return sendEmail(email, content);
     }
 
 
 
-    public boolean send(String email , String content) {
+
+
+    public boolean sendEmail(String email , String content) {
         //建立邮件消息
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = null;
@@ -181,7 +157,7 @@ public class UserServiceImpl implements IUserService {
             helper.setFrom("amazingryan@163.com");
             helper.setTo(email);
 //            helper.setTo(to);
-            helper.setSubject("这是账号激活的邮件");
+            helper.setSubject("HDI邮箱注册码");
             helper.setText(content, true);
             mailSender.send(message);
             return true;

@@ -13,7 +13,6 @@
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="is_status" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
@@ -30,7 +29,6 @@
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="is_status" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="work_permit" jdbcType="LONGVARBINARY" javaType="_byte[]" />
@@ -38,7 +36,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, username, password, email, occupation, name_chinese, phone, address, company, 
-    role, is_status, create_time, update_time
+    role, create_time, update_time
   </sql>
   <sql id="Blob_Column_List" >
     work_permit
@@ -59,12 +57,12 @@
     insert into hdi_user (user_id, username, password, 
       email, occupation, name_chinese, 
       phone, address, company, 
-      role, is_status, create_time, 
+      role,  create_time,
       update_time, work_permit)
     values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{occupation,jdbcType=VARCHAR}, #{nameChinese,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
-      #{role,jdbcType=INTEGER}, #{isStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{role,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{workPermit,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.User" >
@@ -100,9 +98,7 @@
       <if test="role != null" >
         role,
       </if>
-      <if test="isStatus != null" >
-        is_status,
-      </if>
+
       <if test="createTime != null" >
         create_time,
       </if>
@@ -144,9 +140,7 @@
       <if test="role != null" >
         #{role,jdbcType=INTEGER},
       </if>
-      <if test="isStatus != null" >
-        #{isStatus,jdbcType=TINYINT},
-      </if>
+
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -188,9 +182,7 @@
       <if test="role != null" >
         role = #{role,jdbcType=INTEGER},
       </if>
-      <if test="isStatus != null" >
-        is_status = #{isStatus,jdbcType=TINYINT},
-      </if>
+
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -214,7 +206,6 @@
       address = #{address,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
-      is_status = #{isStatus,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       work_permit = #{workPermit,jdbcType=LONGVARBINARY}
@@ -231,7 +222,6 @@
       address = #{address,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
-      is_status = #{isStatus,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=BIGINT}
@@ -251,7 +241,7 @@
   SELECT
   <include refid="Base_Column_List" />
   from hdi_user
-  where username = #{username}
+  where email = #{email}
 
 </select>
   <!--  resultMap="BaseResultMap  这里写resultType错误-->

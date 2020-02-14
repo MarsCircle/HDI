@@ -7,7 +7,6 @@ import com.hdi.hdi.pojo.User;
 import com.hdi.hdi.service.IUserService;
 import com.hdi.hdi.util.JWT.CookieUtil;
 import com.hdi.hdi.util.JWT.JwtUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,28 +31,50 @@ public class UserController {
     private static final String SIGNINGKEY = "signingKey";
     @Autowired
     private IUserService iUserService;
-    /**
-     * 用户登录
-     * @param username
-     * @param password
-     * @param session
-     * @return
-     */
+//    /**
+//     * 用户登录  带图形验证码的登录
+//     * @param username
+//     * @param password
+//     * @param session
+//     * @return
+//     */
+//    @RequestMapping(value = "login",method = RequestMethod.POST)
+//    @ResponseBody //序列化为json
+//    public ServerResponse<User> login(HttpServletRequest httpServletRequest , HttpServletResponse httpServletResponse, String username , String password , String verificationCode, HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+//        String verificationCodeIn = (String) httpServletRequest.getSession().getAttribute("verificationCode");
+//        httpServletRequest.getSession().removeAttribute("verificationCode");
+//        if (StringUtils.isEmpty(verificationCodeIn) || !verificationCodeIn.equals(verificationCode)) {
+//            return ServerResponse.createByErrorMessage("验证码错误，或已失效");
+//        }
+//
+//        ServerResponse<User> response = iUserService.login(username , password);
+//        if(response.isSuccess()){
+//            session.setAttribute(Const.CURRENT_USER , response.getData());
+//        }
+//
+//        String token = JwtUtil.generateToken(SIGNINGKEY, username);
+//        CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "localhost");
+//        return response;
+//    }
+
+
+
+        /**
+          * 用户登录  带图形验证码的登录
+          * @param email
+          * @param password
+          * @param session
+          * @return
+          */
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody //序列化为json
-    public ServerResponse<User> login(HttpServletRequest httpServletRequest , HttpServletResponse httpServletResponse, String username , String password , String verificationCode, HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        String verificationCodeIn = (String) httpServletRequest.getSession().getAttribute("verificationCode");
-        httpServletRequest.getSession().removeAttribute("verificationCode");
-        if (StringUtils.isEmpty(verificationCodeIn) || !verificationCodeIn.equals(verificationCode)) {
-            return ServerResponse.createByErrorMessage("验证码错误，或已失效");
-        }
-
-        ServerResponse<User> response = iUserService.login(username , password);
+    public ServerResponse<User> login( HttpServletResponse httpServletResponse, String email , String password , HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        ServerResponse<User> response = iUserService.login(email , password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER , response.getData());
         }
 
-        String token = JwtUtil.generateToken(SIGNINGKEY, username);
+        String token = JwtUtil.generateToken(SIGNINGKEY, email);
         CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "localhost");
         return response;
     }
@@ -74,27 +95,32 @@ public class UserController {
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> register(String username, String password, String email, String phone) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        return iUserService.register(username, password, email, phone);
-
-
+    public ServerResponse<String> register(String verificationCode, String username, String password, String email, String phone,String occupation,String nameChinese ,String address,String company) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        return iUserService.register(verificationCode, username, password, email, phone,occupation,nameChinese,address,company);
     }
 
-    @RequestMapping(value = "activateUser",method = RequestMethod.POST)
+
+    @RequestMapping(value = "ValidateCode",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> activateUser(String email , String validateCode)  {
-        return iUserService.activateUser(email,validateCode);
+    public ServerResponse<String> ValidateCode(String email) {
+         if(iUserService.checkEmail(email)){
+             return ServerResponse.createBySuccessMessage("验证码已发送");
+         }else{
+             return ServerResponse.createByErrorMessage("验证码发送失败");
+         }
     }
 
+//    @RequestMapping(value = "activateUser",method = RequestMethod.POST)
+//    @ResponseBody
+//    public ServerResponse<String> activateUser(String email , String validateCode)  {
+//        return iUserService.activateUser(email,validateCode);
+//    }
 
-    @RequestMapping(value = "check_valid",method = RequestMethod.POST)
+
+    @RequestMapping(value = "checkValid",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> checkValid(String str , String type){
         return iUserService.checkValid(str ,type);
     }
-
-
-
-
 
 }

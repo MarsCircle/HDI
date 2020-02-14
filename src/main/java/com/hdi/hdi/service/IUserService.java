@@ -10,13 +10,13 @@ public interface IUserService {
 
    ServerResponse<User> login(String username , String password) throws InvalidKeySpecException, NoSuchAlgorithmException;
 
-   ServerResponse<String> register(String username, String password, String email, String phone) throws InvalidKeySpecException, NoSuchAlgorithmException;
+   ServerResponse<String> register(String verificationCode,String username, String password, String email, String phone,String occupation,String nameChinese ,String address,String company) throws InvalidKeySpecException, NoSuchAlgorithmException;
 
    ServerResponse<String> checkValid(String str,String type);
 
-   ServerResponse<String> activateUser(String email , String validateCode);
 
-   boolean checkEmail(String email,String ValidateCode);
+   boolean checkEmail(String email);
 
-   boolean send(String email , String content);
+   boolean sendEmail(String email , String content);
+
 }

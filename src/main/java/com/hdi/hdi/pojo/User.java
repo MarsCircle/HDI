@@ -23,15 +23,13 @@ public class User {
 
     private Integer role;
 
-    private Byte isStatus;
-
     private Date createTime;
 
     private Date updateTime;
 
     private byte[] workPermit;
 
-    public User(Long userId, String username, String password, String email, String occupation, String nameChinese, String phone, String address, String company, Integer role, Byte isStatus, Date createTime, Date updateTime, byte[] workPermit) {
+    public User( Long userId,String username, String password, String email, String occupation, String nameChinese, String phone, String address, String company, Integer role, Date createTime, Date updateTime) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -42,17 +40,43 @@ public class User {
         this.address = address;
         this.company = company;
         this.role = role;
-        this.isStatus = isStatus;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.workPermit = null;
+    }
+
+
+    public User( String username, String password, String email, String occupation, String nameChinese, String phone, String address, String company, Integer role, Date createTime, Date updateTime, byte[] workPermit) {
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.occupation = occupation;
+        this.nameChinese = nameChinese;
+        this.phone = phone;
+        this.address = address;
+        this.company = company;
+        this.role = role;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.workPermit = workPermit;
     }
-
     public User() {
         super();
     }
 
-    public User(String username, String password, String email, String phone) {
+
+    public User(String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.occupation = occupation;
+        this.nameChinese = nameChinese;
+        this.phone = phone;
+        this.address = address;
+        this.company = company;
+        this.workPermit= new byte[]{ };
+        this.role = 0;
     }
 
     public Long getUserId() {
@@ -135,13 +159,7 @@ public class User {
         this.role = role;
     }
 
-    public Byte getIsStatus() {
-        return isStatus;
-    }
 
-    public void setIsStatus(Byte isStatus) {
-        this.isStatus = isStatus;
-    }
 
     public Date getCreateTime() {
         return createTime;
