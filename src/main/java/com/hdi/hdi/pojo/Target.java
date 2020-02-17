@@ -17,6 +17,28 @@ public class Target {
 
     private String species;
 
+    private String herbName;
+    private String drugName;
+
+    public String getHerbName() {
+        return herbName;
+    }
+
+    public void setHerbName(String herbName) {
+        this.herbName = herbName;
+    }
+
+    public String getDrugName() {
+        return drugName;
+    }
+
+    public void setDrugName(String drugName) {
+        this.drugName = drugName;
+    }
+
+
+
+
     private Date createTime;
 
     private Date updateTime;

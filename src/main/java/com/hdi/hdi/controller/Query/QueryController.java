@@ -103,6 +103,61 @@ public class QueryController {
     }
 
 
+    /**
+     * Compound查询
+     * @param moleculeName
+     * @param obScore
+     * @param moleculeWeight
+     * @return
+     */
+    @RequestMapping(value = "compound",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<Compound> compound(String moleculeName, String obScore , String moleculeWeight) {
+        return iQueryService.compound( moleculeName  , obScore ,moleculeWeight);
+    }
+
+    /**
+     * CompoundToAcmpd查询
+     * @param moleculeName
+     * @param obScore
+     * @param moleculeWeight
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "compoundToAcmpd",method = RequestMethod.POST)
+    @ResponseBody
+    public List<TargetCompound> compoundToAcmpd(String moleculeName, String obScore , String moleculeWeight ,int page) {
+        List<TargetCompound> targetCompound = iQueryService.compoundToAcmpd( moleculeName  , obScore ,moleculeWeight,page);
+        return targetCompound;
+    }
+
+
+    /**
+     * Target查询
+     * @param geneSymbol
+     * @param species
+     * @return
+     */
+    @RequestMapping(value = "target",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<Target> target(String geneSymbol, String species ) {
+        return iQueryService.target( geneSymbol  , species );
+    }
+
+    /**
+     * TargetToAcmpd查询
+     * @param geneSymbol
+     * @param species
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "targetToAcmpd",method = RequestMethod.POST)
+    @ResponseBody
+    public List<TargetCompound> targetToAcmpd(String geneSymbol, String species ,int page) {
+        List<TargetCompound> targetCompound = iQueryService.targetToAcmpd( geneSymbol  , species ,page);
+        return targetCompound;
+    }
+
 
 }
 

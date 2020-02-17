@@ -23,4 +23,6 @@ public interface DrugMapper {
     Drug selectDrug(String drugName, String drugIndication, String route);
 
     String selectDrugId(String drugName, String drugIndication, String route);
+
+    String selectDrugName(String drug_id);
 }

@@ -22,4 +22,6 @@ public interface HerbMapper {
     Herb selectHerb(String chineseSimplified, String classChinese);
 
     String selectHerbId(String chineseSimplified, String classChinese);
+
+    String selectHerbName(String herbId);
 }

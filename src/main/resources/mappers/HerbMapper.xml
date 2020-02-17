@@ -222,4 +222,12 @@
     where chinese_simplified = #{chineseSimplified}
     AND `class_chinese` = #{classChinese}
   </select>
+
+  <select id="selectHerbName" parameterType="string" resultType="string">
+    SELECT
+    herb_name
+    from hdi_herb
+    where herb_id = #{herbId}
+  </select>
+
 </mapper>

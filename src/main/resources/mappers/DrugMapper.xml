@@ -166,4 +166,12 @@
     AND `route` = #{route}
   </select>
 
+  <select id="selectDrugName" parameterType="string" resultType="string">
+    SELECT
+    drug_name
+    from hdi_drug
+    where drug_id = #{drugId}
+  </select>
+
+
 </mapper>

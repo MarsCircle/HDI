@@ -18,4 +18,8 @@ public interface TargetMapper {
     int updateByPrimaryKey(Target record);
 
     String selectGeneSymbol(String targetId);
+
+    int checkTarget(String geneSymbol);
+
+    Target selectTarget(String geneSymbol, String species);
 }

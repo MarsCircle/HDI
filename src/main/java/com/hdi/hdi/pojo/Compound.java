@@ -14,6 +14,25 @@ public class Compound {
 
     private String alias;
 
+    public String getHerbName() {
+        return herbName;
+    }
+
+    public void setHerbName(String herbName) {
+        this.herbName = herbName;
+    }
+
+    public String getDrugName() {
+        return drugName;
+    }
+
+    public void setDrugName(String drugName) {
+        this.drugName = drugName;
+    }
+
+    private String herbName;
+    private String drugName;
+
     private Integer pubchemId;
 
     private String casId;

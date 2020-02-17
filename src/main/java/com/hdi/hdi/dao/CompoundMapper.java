@@ -18,4 +18,10 @@ public interface CompoundMapper {
     int updateByPrimaryKey(Compound record);
 
     String selectMoleculeName(String acmpdId);
+
+    int checkCompound(String moleculeName);
+
+    Compound selectCompound(String moleculeName, String obScore, String moleculeWeight);
+
+
 }

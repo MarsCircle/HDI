@@ -160,6 +160,26 @@
     where acmpd_id = #{acmpdId}
   </select>
 
+  <select id="checkCompound" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from hdi_compound
+    where molecule_name = #{moleculeName}
+  </select>
+
+  <select id="selectCompound" parameterType="string" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from hdi_compound
+    where molecule_name = #{moleculeName}
+    AND `ob_score` = #{obScore}
+    AND `molecule_weight` = #{moleculeWeight}
+  </select>
+
+  <select id="selectId" parameterType="string" resultType="map">
+    SELECT
+    herb_id ,drug_id
+    from hdi_compound
+    where acmpd_id = #{acmpdId}
+  </select>
 
 
 </mapper>

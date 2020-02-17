@@ -150,5 +150,17 @@
     where target_id = #{targetId}
   </select>
 
+  <select id="checkTarget" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from hdi_target
+    where gene_symbol = #{geneSymbol}
+  </select>
+
+  <select id="selectTarget" parameterType="string" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from hdi_target
+    where gene_symbol = #{geneSymbol}
+    AND `species` = #{species}
+  </select>
 
 </mapper>

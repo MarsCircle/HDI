@@ -3,6 +3,9 @@ package com.hdi.hdi.dao;
 import com.hdi.hdi.pojo.HDCompound;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface HDCompoundMapper {
     int deleteByPrimaryKey(String hdAcmpdId);
@@ -20,4 +23,9 @@ public interface HDCompoundMapper {
     String selectAcmpdId(String herbId);
 
     String selectAcmpdIdByDrugId(String drugId);
+
+    List<Map> selectId(String acmpdId);
+
+
+    List<Map> selectByAcmpdId(String acmpId);
 }

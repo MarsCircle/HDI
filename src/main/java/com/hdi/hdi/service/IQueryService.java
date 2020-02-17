@@ -18,4 +18,12 @@ public interface IQueryService {
     ServerResponse<Drug> drug(String drugName, String drugIndication , String route);
 
     List<TargetCompound> drugAcmpdCompound(String drugName, String drugIndication , String route,int page);
+
+    ServerResponse<Compound> compound(String moleculeName, String obScore, String moleculeWeight);
+
+    List<TargetCompound> compoundToAcmpd(String moleculeName, String obScore, String moleculeWeight, int page);
+
+    ServerResponse<Target> target(String geneSymbol, String species);
+
+    List<TargetCompound> targetToAcmpd(String geneSymbol, String species, int page);
 }
