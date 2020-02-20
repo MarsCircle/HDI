@@ -6,6 +6,7 @@ import com.hdi.hdi.pojo.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Map;
 
 public interface IQueryService {
 
@@ -25,5 +26,5 @@ public interface IQueryService {
 
     ServerResponse<Target> target(String geneSymbol, String species);
 
-    List<TargetCompound> targetToAcmpd(String geneSymbol, String species, int page);
+    List<Map<String,String>>  targetToAcmpd(String geneSymbol, String species, int page);
 }

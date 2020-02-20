@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Map;
 import java.util.function.ToDoubleBiFunction;
 
 
@@ -153,8 +154,8 @@ public class QueryController {
      */
     @RequestMapping(value = "targetToAcmpd",method = RequestMethod.POST)
     @ResponseBody
-    public List<TargetCompound> targetToAcmpd(String geneSymbol, String species ,int page) {
-        List<TargetCompound> targetCompound = iQueryService.targetToAcmpd( geneSymbol  , species ,page);
+    public List<Map<String,String>>  targetToAcmpd(String geneSymbol, String species ,int page) {
+        List<Map<String,String>>  targetCompound = iQueryService.targetToAcmpd( geneSymbol  , species ,page);
         return targetCompound;
     }
 

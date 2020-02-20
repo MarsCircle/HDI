@@ -142,11 +142,20 @@
     where target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR}
   </update>
 
-  <select id="selectTargetCompoundByAcmpdId" resultMap="BaseResultMap">
+  <select id="selectTargetCompoundListByAcmpdId" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     from target_compound
     where acmpd_id = #{acmpdId}
     limit #{page} , 6
   </select>
+
+  <select id="selectTargetCompoundByAcmpdId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from target_compound
+    where acmpd_id = #{acmpdId}
+    AND target_id = #{targetId}
+  </select>
+
 </mapper>

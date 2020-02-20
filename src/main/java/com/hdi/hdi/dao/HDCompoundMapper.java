@@ -24,7 +24,7 @@ public interface HDCompoundMapper {
 
     String selectAcmpdIdByDrugId(String drugId);
 
-    List<Map> selectId(String acmpdId);
+    List<Map<String,String>> selectId(String acmpdId);
 
 
     List<Map> selectByAcmpdId(String acmpId);

@@ -3,6 +3,8 @@ package com.hdi.hdi.dao;
 import com.hdi.hdi.pojo.Target;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface TargetMapper {
     int deleteByPrimaryKey(String targetId);
@@ -21,5 +23,5 @@ public interface TargetMapper {
 
     int checkTarget(String geneSymbol);
 
-    Target selectTarget(String geneSymbol, String species);
+    List<Target> selectTarget(String geneSymbol, String species);
 }
