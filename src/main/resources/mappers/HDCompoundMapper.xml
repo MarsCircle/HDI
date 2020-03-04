@@ -119,14 +119,14 @@
 
 
 
-  <select id="selectAcmpdId" parameterType="string" resultType="string">
+  <select id="selectId" parameterType="string" resultType="map">
     SELECT
     drug_id , herb_id
     from hd_compound
     where acmpd_id = #{acmpdId}
   </select>
 
-  <select id="selectByAcmpdId" parameterType="string" resultType="string">
+  <select id="selectAcmpdId" parameterType="string" resultType="string">
     SELECT
     acmpd_id
     from hd_compound

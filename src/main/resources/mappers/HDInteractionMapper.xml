@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdi.hdi.dao.HDInteractionMapper" >
+  <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.HDInteraction" >
+    <constructor >
+      <idArg column="herb_drug_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="drug_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="interactions_describe" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="adverse_effect" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="evidences" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="level" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    herb_drug_id, drug_id, herb_id, interactions_describe, adverse_effect, evidences, 
+    level, source, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_interaction
+    where herb_drug_id = #{herbDrugId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hd_interaction
+    where herb_drug_id = #{herbDrugId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hdi.hdi.pojo.HDInteraction" >
+    insert into hd_interaction (herb_drug_id, drug_id, herb_id, 
+      interactions_describe, adverse_effect, evidences, 
+      level, source, create_time, 
+      update_time)
+    values (#{herbDrugId,jdbcType=VARCHAR}, #{drugId,jdbcType=VARCHAR}, #{herbId,jdbcType=VARCHAR}, 
+      #{interactionsDescribe,jdbcType=VARCHAR}, #{adverseEffect,jdbcType=VARCHAR}, #{evidences,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.HDInteraction" >
+    insert into hd_interaction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="herbDrugId != null" >
+        herb_drug_id,
+      </if>
+      <if test="drugId != null" >
+        drug_id,
+      </if>
+      <if test="herbId != null" >
+        herb_id,
+      </if>
+      <if test="interactionsDescribe != null" >
+        interactions_describe,
+      </if>
+      <if test="adverseEffect != null" >
+        adverse_effect,
+      </if>
+      <if test="evidences != null" >
+        evidences,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="herbDrugId != null" >
+        #{herbDrugId,jdbcType=VARCHAR},
+      </if>
+      <if test="drugId != null" >
+        #{drugId,jdbcType=VARCHAR},
+      </if>
+      <if test="herbId != null" >
+        #{herbId,jdbcType=VARCHAR},
+      </if>
+      <if test="interactionsDescribe != null" >
+        #{interactionsDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="adverseEffect != null" >
+        #{adverseEffect,jdbcType=VARCHAR},
+      </if>
+      <if test="evidences != null" >
+        #{evidences,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.HDInteraction" >
+    update hd_interaction
+    <set >
+      <if test="drugId != null" >
+        drug_id = #{drugId,jdbcType=VARCHAR},
+      </if>
+      <if test="herbId != null" >
+        herb_id = #{herbId,jdbcType=VARCHAR},
+      </if>
+      <if test="interactionsDescribe != null" >
+        interactions_describe = #{interactionsDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="adverseEffect != null" >
+        adverse_effect = #{adverseEffect,jdbcType=VARCHAR},
+      </if>
+      <if test="evidences != null" >
+        evidences = #{evidences,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where herb_drug_id = #{herbDrugId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.HDInteraction" >
+    update hd_interaction
+    set drug_id = #{drugId,jdbcType=VARCHAR},
+      herb_id = #{herbId,jdbcType=VARCHAR},
+      interactions_describe = #{interactionsDescribe,jdbcType=VARCHAR},
+      adverse_effect = #{adverseEffect,jdbcType=VARCHAR},
+      evidences = #{evidences,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where herb_drug_id = #{herbDrugId,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectHDInteraction" parameterType="string" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from hd_interaction
+    where drug_id = #{drugId}
+    AND herb_id = #{herbId}
+  </select>
+
+
+</mapper>

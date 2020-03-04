@@ -48,32 +48,27 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    @Override
+    public ServerResponse<User> loginJWT(String email) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        User user = userMapper.selectLogin(email);
+        user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
+        return ServerResponse.createBySuccess("登陆成功", user);
 
-    public ServerResponse<String> register(String verificationCode , String username, String password, String email, String phone, String occupation,String nameChinese ,String address,String company) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    }
+
+    @Override
+    public ServerResponse<String> registerNormal(String verificationCode , String username, String password, String email, String phone, String occupation,String nameChinese ,String address) throws InvalidKeySpecException, NoSuchAlgorithmException {
         //判断参数是否为空值
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation) ||StringUtils.isEmpty(company) ) {
+        if (StringUtils.isEmpty(verificationCode) ||StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation)  ) {
             return ServerResponse.createByErrorMessage("参数不可为空");
         }
-        //判断邮箱验证码是否有误
-        Jedis jedis = new Jedis();
-        String verificationCodeRight = jedis.get(email + "_verificationCode");
-        if(verificationCodeRight == null){
-            return ServerResponse.createByErrorMessage("邮箱验证码已过期");
-        }
-        if(!verificationCode.equals(verificationCodeRight)){
-            return ServerResponse.createByErrorMessage("邮箱验证码有误！注册失败");
-        }
-        User user = new User(username, password, email, phone, occupation, nameChinese, address, company);
+        checkVerificationCode(email,verificationCode);
+        User user = new User(username, password, email, phone, occupation, nameChinese, address);
         //判断邮箱是否已经注册
         ServerResponse validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
-        //判断用户名是否已存在
-//        validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
-//        if (!validResponse.isSuccess()) {
-//            return validResponse;
-//        }
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //MD5加密
         user.setPassword(PasswordHash.createHash(user.getPassword()));
@@ -85,6 +80,65 @@ public class UserServiceImpl implements IUserService {
         }
 
 
+    public ServerResponse<String> registerMedical(String verificationCode, String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        //判断参数是否为空值
+        if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation) ||  StringUtils.isEmpty(company)||  StringUtils.isEmpty(workPermit)  ) {
+            return ServerResponse.createByErrorMessage("参数不可为空");
+        }
+        checkVerificationCode(email,verificationCode);
+        User user = new User(username, password, email, phone, occupation, nameChinese, address, company,  workPermit);
+        //判断邮箱是否已经注册
+        ServerResponse validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
+        if (!validResponse.isSuccess()) {
+            return validResponse;
+        }
+        user.setRole(Const.Role.ROLE_MEDICAL);
+        //MD5加密
+        user.setPassword(PasswordHash.createHash(user.getPassword()));
+        int resultCount = userMapper.insert(user);
+        if (resultCount == 0) {
+            return ServerResponse.createByErrorMessage("注册失败");
+        }
+        return ServerResponse.createBySuccessMessage("注册请求已发送，核实中");
+    }
+
+
+    public ServerResponse<String> registerResearcher(String verificationCode, String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        //判断参数是否为空值
+        if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation) ||  StringUtils.isEmpty(company)||  StringUtils.isEmpty(workPermit)  ) {
+            return ServerResponse.createByErrorMessage("参数不可为空");
+        }
+        checkVerificationCode(email,verificationCode);
+        User user = new User(username, password, email, phone, occupation, nameChinese, address, company,  workPermit);
+
+        //判断邮箱是否已经注册
+        ServerResponse validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
+        if (!validResponse.isSuccess()) {
+            return validResponse;
+        }
+        user.setRole(Const.Role.ROLE_RESEARCHER);
+        //MD5加密
+        user.setPassword(PasswordHash.createHash(user.getPassword()));
+        int resultCount = userMapper.insert(user);
+        if (resultCount == 0) {
+            return ServerResponse.createByErrorMessage("注册失败");
+        }
+        return ServerResponse.createBySuccessMessage("注册请求已发送，核实中");
+    }
+
+
+    public ServerResponse<String> checkVerificationCode(String email , String verificationCode){
+        //判断邮箱验证码是否有误
+        Jedis jedis = new Jedis();
+        String verificationCodeRight = jedis.get(email + "_verificationCode");
+        if(verificationCodeRight == null){
+            return ServerResponse.createByErrorMessage("邮箱验证码已过期");
+        }
+        if(!verificationCode.equals(verificationCodeRight)){
+            return ServerResponse.createByErrorMessage("邮箱验证码有误！注册失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
 
     public ServerResponse<String> checkValid(String str , String type){
         if (org.apache.commons.lang3.StringUtils.isNotBlank(type))

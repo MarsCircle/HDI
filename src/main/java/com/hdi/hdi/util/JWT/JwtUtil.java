@@ -18,11 +18,8 @@ public class JwtUtil {
                 .setSubject(subject)  //username
                 .setIssuedAt(now)   //date
                 .signWith(SignatureAlgorithm.HS256, signingKey);
-
         String token = builder.compact();
-
         RedisUtil.INSTANCE.sadd(REDIS_SET_ACTIVE_SUBJECTS, subject);
-
         return token;
     }
 
@@ -31,16 +28,14 @@ public class JwtUtil {
         if(token == null) {
             return null;
         }
-
         String subject = Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody().getSubject();
         if (!RedisUtil.INSTANCE.sismember(REDIS_SET_ACTIVE_SUBJECTS, subject)) {
             return null;
         }
-
         return subject;
     }
 
     public static void invalidateRelatedTokens(HttpServletRequest httpServletRequest) {
-        RedisUtil.INSTANCE.srem(REDIS_SET_ACTIVE_SUBJECTS, (String) httpServletRequest.getAttribute("username"));
+        RedisUtil.INSTANCE.srem(REDIS_SET_ACTIVE_SUBJECTS, (String) httpServletRequest.getAttribute("email"));
     }
 }

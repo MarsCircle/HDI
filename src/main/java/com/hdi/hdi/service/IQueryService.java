@@ -27,4 +27,6 @@ public interface IQueryService {
     ServerResponse<Target> target(String geneSymbol, String species);
 
     List<Map<String,String>>  targetToAcmpd(String geneSymbol, String species, int page);
+
+    ServerResponse<HDInteraction> hdInteraction(String herbOrFormulaName, String drugName);
 }

@@ -160,4 +160,12 @@
     from formula_herb
     where formula_name = #{formulaName}
   </select>
+
+
+  <select id="selectHerbNameId" parameterType="string" resultType="map">
+    SELECT
+    herb_id , herb_name
+    from formula_herb
+    where formula_name = #{formulaName}
+  </select>
 </mapper>

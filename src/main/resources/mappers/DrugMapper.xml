@@ -173,5 +173,13 @@
     where drug_id = #{drugId}
   </select>
 
+  <select id="selectDrugIdByName" parameterType="string" resultType="string">
+    SELECT
+    drug_id
+    from hdi_drug
+    where drug_name = #{drugName}
+
+  </select>
+
 
 </mapper>

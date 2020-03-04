@@ -4,15 +4,11 @@ import com.hdi.hdi.common.ServerResponse;
 import com.hdi.hdi.dao.*;
 import com.hdi.hdi.pojo.*;
 import com.hdi.hdi.service.IQueryService;
-import com.hdi.hdi.service.IUserService;
-import com.hdi.hdi.util.SaltHash.PasswordHash;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +32,9 @@ public class QueryServiceImpl implements IQueryService {
     private TargetCompoundMapper targetCompoundMapper;
     @Autowired
     private FormulaHerbMapper formulaHerbMapper;
+    @Autowired
+    private HDInteractionMapper hdInteractionMapper;
+
 
 
     @Override
@@ -45,12 +44,9 @@ public class QueryServiceImpl implements IQueryService {
             return ServerResponse.createByErrorMessage("该方剂不存在");
         }
         Formula formula = formulaMapper.selectFormula(formulaName,group,subGroup);
-
         List<Map> formulaCompose = formulaHerbMapper.selectFormulaCompose(formulaName);
-
         StringBuilder Compose = new StringBuilder();
         for(int i = 0 ; i < formulaCompose.size() ; i++) {
-
             Compose.append(formulaCompose.get(i).get("herb_name")).append("(")
                     .append(formulaCompose.get(i).get("herb_quantity"))
                     .append(formulaCompose.get(i).get("herb_quantity_unit"))
@@ -134,7 +130,7 @@ public class QueryServiceImpl implements IQueryService {
         }
         Compound compound = compoundMapper.selectCompound(moleculeName,obScore,moleculeWeight);
         String acmpdId = compound.getAcmpdId();
-        List<Map<String,String>> herbDrugId = hdCompoundMapper.selectId(acmpdId);
+        List<Map> herbDrugId = hdCompoundMapper.selectId(acmpdId);
         String herbName = herbMapper.selectHerbName((String) herbDrugId.get(0).get("herb_id"));
         String drugName = drugMapper.selectDrugName((String) herbDrugId.get(0).get("drug_id"));
         compound.setDrugName(drugName);
@@ -170,10 +166,11 @@ public class QueryServiceImpl implements IQueryService {
         StringBuilder herbName = new StringBuilder();
         StringBuilder drugName = new StringBuilder();
 
-        for(int i = 0 ; i <= target.size() ; i++) {
+        for(int i = 0 ; i < target.size() ; i++) {
             String acmpdId = target.get(i).getAcmpdId();
-            List<Map<String,String>> herbDrugId = hdCompoundMapper.selectId(acmpdId);
-            for (int j = 0; j <= herbDrugId.size(); j++) {
+            List<Map> herbDrugId = hdCompoundMapper.selectId(acmpdId);
+            for (int j = 0; j < herbDrugId.size(); j++) {
+                System.out.println(herbDrugId.size());
                 herbName.append(herbMapper.selectHerbName((String) herbDrugId.get(j).get("herb_id")))
                         .append("、");
                 drugName.append(drugMapper.selectDrugName((String) herbDrugId.get(j).get("drug_id")))
@@ -196,28 +193,62 @@ public class QueryServiceImpl implements IQueryService {
             return null;
         }
         List<Target> target = targetMapper.selectTarget(geneSymbol,species);
-        List<Map<String,String>> herbDrugName = new ArrayList<>();
-        for(int i = 0 ; i <= target.size() ; i++) {
+        List<Map<String,String>> herbDrugName = new ArrayList<Map<String, String>>();
+        for(int i = 0 ; i < target.size() ; i++) {
             String acmpdId = target.get(i).getAcmpdId();
             String targetId = target.get(i).getTargetId();
             TargetCompound targetCompound = targetCompoundMapper.selectTargetCompoundByAcmpdId(acmpdId,targetId);
-            List<Map<String,String>> herbDrugId = hdCompoundMapper.selectId(acmpdId);
+            List<Map> herbDrugId = hdCompoundMapper.selectId(acmpdId);
             for (int j = (page -1) * 8; j < herbDrugId.size() && j < page * 8 ; j = j+2) {
-                herbDrugName.get(j).put("herbDrugName" ,herbMapper.selectHerbName((String) herbDrugId.get(j).get("herb_id")));
-                herbDrugName.get(j).put("MoleculeName",targetCompound.getMoleculeName());
-                herbDrugName.get(j).put("TargetClass",targetCompound.getTargetClass());
-                herbDrugName.get(j).put("Relation",targetCompound.getRelation());
-                herbDrugName.get(j).put("Species",targetCompound.getSpecies());
-                herbDrugName.get(j).put("Reference",targetCompound.getReference());
-                herbDrugName.get(j+1).put("herbDrugName" ,drugMapper.selectDrugName((String) herbDrugId.get(j).get("drug_id")));
-                herbDrugName.get(j+1).put("MoleculeName",targetCompound.getMoleculeName());
-                herbDrugName.get(j+1).put("TargetClass",targetCompound.getTargetClass());
-                herbDrugName.get(j+1).put("Relation",targetCompound.getRelation());
-                herbDrugName.get(j+1).put("Species",targetCompound.getSpecies());
-                herbDrugName.get(j+1).put("Reference",targetCompound.getReference());
+                Map<String, String> map = new HashMap<>();
+                map.put("herbDrugName" ,herbMapper.selectHerbName((String) herbDrugId.get(j).get("herb_id")));
+                map.put("MoleculeName",targetCompound.getMoleculeName());
+                map.put("TargetClass",targetCompound.getTargetClass());
+                map.put("Relation",targetCompound.getRelation());
+                map.put("Species",targetCompound.getSpecies());
+                map.put("Reference",targetCompound.getReference());
+                herbDrugName.add(map);
+                Map<String, String> map1 = new HashMap<>();
+                map1.put("herbDrugName" ,drugMapper.selectDrugName((String) herbDrugId.get(j).get("drug_id")));
+                map1.put("MoleculeName",targetCompound.getMoleculeName());
+                map1.put("TargetClass",targetCompound.getTargetClass());
+                map1.put("Relation",targetCompound.getRelation());
+                map1.put("Species",targetCompound.getSpecies());
+                map1.put("Reference",targetCompound.getReference());
+                herbDrugName.add(map1);
+//
             }
         }
         return herbDrugName;
+    }
+
+    @Override
+    public ServerResponse<HDInteraction> hdInteraction(String herbOrFormulaName, String drugName) {
+        //判断西药是否存在
+        if(drugMapper.checkDrug(drugName) == 0){
+            return ServerResponse.createByErrorMessage("无此西药");
+        }
+        String drugId = drugMapper.selectDrugIdByName(drugName);
+        //判断是方剂还是中药
+        if (herbMapper.checkHerb(herbOrFormulaName) != 0) {
+            String herbId = herbMapper.selectHerbIdByName(herbOrFormulaName);
+            HDInteraction hdInteraction = hdInteractionMapper.selectHDInteraction(herbId,drugId);
+            hdInteraction.setDrugName(drugName);
+            hdInteraction.setHerbName(herbOrFormulaName);
+            return ServerResponse.createBySuccess("查找成功" , hdInteraction);
+        } else {
+            if (formulaMapper.checkFormula(herbOrFormulaName) != 0) {
+                List<Map> herbNameId = formulaMapper.selectHerbNameId(herbOrFormulaName);
+                String herbName = (String)herbNameId.get(0).get("herbName");
+                String herbId = (String)herbNameId.get(0).get("herbId");
+                HDInteraction hdInteraction = hdInteractionMapper.selectHDInteraction(herbId,drugId);
+                hdInteraction.setDrugName(drugName);
+                hdInteraction.setHerbName(herbName);
+                return ServerResponse.createBySuccess("查找成功",hdInteraction);
+            }else {
+                return ServerResponse.createByErrorMessage("无此方剂或中药");
+            }
+        }
     }
 }
 

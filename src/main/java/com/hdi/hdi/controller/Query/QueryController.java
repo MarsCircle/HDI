@@ -31,7 +31,8 @@ public class QueryController {
     @Autowired
     private IQueryService iQueryService;
 
-        /**
+
+    /**
          * formular查询
          * @param formulaName
          * @param group
@@ -41,8 +42,7 @@ public class QueryController {
     @RequestMapping(value = "formula",method = RequestMethod.POST)
     @ResponseBody //序列化为json
     public ServerResponse<Formula> formula(String formulaName , String group ,String subGroup) {
-        ServerResponse<Formula> response = iQueryService.formula( formulaName , group , subGroup );
-        return response;
+        return iQueryService.formula( formulaName , group , subGroup );
         }
 
 
@@ -56,8 +56,7 @@ public class QueryController {
     @ResponseBody
     //TODO : 这里参数先用是中文的，之后还得补上其它语言的
     public ServerResponse<Herb> herb(String chineseSimplified , String classChinese ) {
-        ServerResponse<Herb> response = iQueryService.herb( chineseSimplified , classChinese );
-        return response;
+        return iQueryService.herb( chineseSimplified , classChinese );
     }
 
     /**
@@ -70,8 +69,7 @@ public class QueryController {
     @RequestMapping(value = "herbAcmpdCompound",method = RequestMethod.POST)
     @ResponseBody
     public List<TargetCompound> herbAcmpdCompound(String chineseSimplified,String classChinese ,int page ) {
-        List<TargetCompound> targetCompound = iQueryService.herbAcmpdCompound( chineseSimplified  , classChinese ,page);
-        return targetCompound;
+        return iQueryService.herbAcmpdCompound( chineseSimplified  , classChinese ,page);
     }
 
     /**
@@ -84,8 +82,7 @@ public class QueryController {
     @RequestMapping(value = "drug",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<Drug> drug(String drugName, String drugIndication , String route) {
-        ServerResponse<Drug> response = iQueryService.drug( drugName , drugIndication ,route);
-        return response;
+        return iQueryService.drug( drugName , drugIndication ,route);
     }
 
     /**
@@ -99,8 +96,7 @@ public class QueryController {
     @RequestMapping(value = "drugAcmpdCompound",method = RequestMethod.POST)
     @ResponseBody
     public List<TargetCompound> drugAcmpdCompound(String drugName, String drugIndication , String route,int page) {
-        List<TargetCompound> targetCompound = iQueryService.drugAcmpdCompound( drugName  , drugIndication ,route,page);
-        return targetCompound;
+        return iQueryService.drugAcmpdCompound( drugName  , drugIndication ,route,page);
     }
 
 
@@ -128,8 +124,7 @@ public class QueryController {
     @RequestMapping(value = "compoundToAcmpd",method = RequestMethod.POST)
     @ResponseBody
     public List<TargetCompound> compoundToAcmpd(String moleculeName, String obScore , String moleculeWeight ,int page) {
-        List<TargetCompound> targetCompound = iQueryService.compoundToAcmpd( moleculeName  , obScore ,moleculeWeight,page);
-        return targetCompound;
+        return iQueryService.compoundToAcmpd( moleculeName  , obScore ,moleculeWeight,page);
     }
 
 
@@ -155,10 +150,19 @@ public class QueryController {
     @RequestMapping(value = "targetToAcmpd",method = RequestMethod.POST)
     @ResponseBody
     public List<Map<String,String>>  targetToAcmpd(String geneSymbol, String species ,int page) {
-        List<Map<String,String>>  targetCompound = iQueryService.targetToAcmpd( geneSymbol  , species ,page);
-        return targetCompound;
+        return iQueryService.targetToAcmpd( geneSymbol  , species ,page);
     }
 
-
+    /**
+     * HDCompound查询  由方剂或中药名字 与 西药名字查相互作用
+     * @param herbOrFormulaName
+     * @param drugName
+     * @return ServerResponse<HDCompound>
+     */
+    @RequestMapping(value = "hdInteraction",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<HDInteraction>  hdInteraction(String herbOrFormulaName, String drugName ) {
+        return iQueryService.hdInteraction( herbOrFormulaName  , drugName );
+    }
 }
 

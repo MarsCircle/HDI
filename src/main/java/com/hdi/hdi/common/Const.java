@@ -11,7 +11,9 @@ public class Const {
 
     public interface Role{
         int ROLE_CUSTOMER = 0; //普通用户
-        int ROLE_ADMIN = 1;
+        int ROLE_MEDICAL = 1; //医疗用户
+        int ROLE_RESEARCHER = 2; // 研究人员
+
     }
 
     public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";

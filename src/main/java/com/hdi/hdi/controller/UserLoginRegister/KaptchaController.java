@@ -2,10 +2,9 @@
 //
 //
 //import com.google.code.kaptcha.impl.DefaultKaptcha;
+//import com.hdi.hdi.common.ServerResponse;
 //import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.bind.annotation.*;
 //
 //import javax.imageio.ImageIO;
 //import javax.servlet.ServletOutputStream;
@@ -13,7 +12,7 @@
 //import javax.servlet.http.HttpServletResponse;
 //import java.awt.image.BufferedImage;
 //import java.io.ByteArrayOutputStream;
-//TODO: 因为项目貌似不需要验证码  所以暂时注释掉
+//
 //@RestController
 //@RequestMapping("/api/kaptcha")
 //public class KaptchaController {
@@ -50,8 +49,8 @@
 //        responseOutputStream.close();
 //    }
 //}
-
-
+//
+//
 //    @PostMapping("/checkVerificationCode")
 //public ServerResponse<String> checkVerificationCode(@RequestParam(value = "verificationCode") String verificationCode, HttpServletRequest httpServletRequest) {
 //    String verificationCodeIn = (String) httpServletRequest.getSession().getAttribute("verificationCode");

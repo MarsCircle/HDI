@@ -60,7 +60,7 @@ public class UserController {
 
 
         /**
-          * 用户登录  带图形验证码的登录
+          * 用户登录
           * @param email
           * @param password
           * @param session
@@ -68,14 +68,31 @@ public class UserController {
           */
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody //序列化为json
-    public ServerResponse<User> login( HttpServletResponse httpServletResponse, String email , String password , HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ServerResponse<User> login( HttpServletRequest httpServletRequest , HttpServletResponse httpServletResponse, String email , String password , HttpSession session) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        String subject = JwtUtil.parseToken(httpServletRequest,jwtTokenCookieName, SIGNINGKEY);
+        if(subject!=null){
+            return iUserService.loginJWT(subject);
+        }
+        if(email==null && password==null){
+            return ServerResponse.createByErrorMessage("邮箱或密码不可为空");
+        }
         ServerResponse<User> response = iUserService.login(email , password);
+
+
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER , response.getData());
         }
 
         String token = JwtUtil.generateToken(SIGNINGKEY, email);
-        CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "localhost");
+        CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "101.132.34.39");
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", httpServletRequest.getHeader("Origin"));
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since,JWT-TOKEN");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
+        httpServletResponse.addHeader("Access-Control-Allow-Credentials", "true");
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json");
         return response;
     }
 
@@ -84,7 +101,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "logout",method = RequestMethod.GET)
+    @RequestMapping(value = "logout",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpServletResponse httpServletResponse,HttpSession session){
         session.removeAttribute(Const.CURRENT_USER);
@@ -93,10 +110,22 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "register",method = RequestMethod.POST)
+    @RequestMapping(value = "registerNormal",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> register(String verificationCode, String username, String password, String email, String phone,String occupation,String nameChinese ,String address,String company) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        return iUserService.register(verificationCode, username, password, email, phone,occupation,nameChinese,address,company);
+    public ServerResponse<String> registerNormal(String verificationCode, String username, String password, String email, String phone,String occupation,String nameChinese ,String address) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        return iUserService.registerNormal(verificationCode, username, password, email, phone,occupation,nameChinese,address);
+    }
+
+    @RequestMapping(value = "registerMedical",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> registerMedical(String verificationCode, String username, String password, String email, String phone,String occupation,String nameChinese ,String address,String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        return iUserService.registerMedical(verificationCode, username, password, email, phone,occupation,nameChinese,address,company,workPermit);
+    }
+
+    @RequestMapping(value = "registerResearcher",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> registerResearcher(String verificationCode, String username, String password, String email, String phone,String occupation,String nameChinese ,String address,String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        return iUserService.registerResearcher(verificationCode, username, password, email, phone,occupation,nameChinese,address,company,workPermit);
     }
 
 

@@ -223,9 +223,17 @@
     AND `class_chinese` = #{classChinese}
   </select>
 
+
+  <select id="selectHerbIdByName" parameterType="string" resultType="string">
+    SELECT
+    herb_id
+    from hdi_herb
+    where chinese_simplified = #{chineseSimplified}
+  </select>
+
   <select id="selectHerbName" parameterType="string" resultType="string">
     SELECT
-    herb_name
+    chinese_simplified
     from hdi_herb
     where herb_id = #{herbId}
   </select>

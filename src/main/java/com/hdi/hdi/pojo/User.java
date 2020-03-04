@@ -66,7 +66,20 @@ public class User {
     }
 
 
-    public User(String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company) {
+    public User(String username, String password, String email, String phone, String occupation, String nameChinese, String address) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.occupation = occupation;
+        this.nameChinese = nameChinese;
+        this.phone = phone;
+        this.address = address;
+        this.company = null;
+        this.workPermit= new byte[]{ };
+        this.role = 0;
+    }
+
+    public User(String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -75,8 +88,8 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.company = company;
-        this.workPermit= new byte[]{ };
-        this.role = 0;
+        this.role = 1;
+        this.workPermit = workPermit;
     }
 
     public Long getUserId() {

@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.text.Normalizer;
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface FormulaMapper {
     int deleteByPrimaryKey(String formulaId);
@@ -23,5 +26,5 @@ public interface FormulaMapper {
 
     Formula selectFormula(@Param("formulaName") String formulaName, @Param("group") String group, @Param("subGroup") String subGroup);
 
-
+    List<Map> selectHerbNameId(String herbOrFormulaName);
 }
