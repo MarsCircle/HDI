@@ -8,11 +8,41 @@ public class Compound {
 
     private String moleculeName;
 
-    private BigDecimal obScore;
+    private String obScore;
 
     private String canonicalSmiles;
 
     private String alias;
+
+    private String herbName;
+
+    private String drugName;
+
+    private String pubchemId;
+
+    private String casId;
+
+    private String moleculeWeight;
+
+
+    private String drugbankId;
+
+
+
+
+    public Compound(String acmpdId, String moleculeName, String obScore, String canonicalSmiles, String alias, String pubchemId,String drugbankId,String casId, String moleculeWeight, Date createTime, Date updateTime) {
+        this.acmpdId = acmpdId;
+        this.moleculeName = moleculeName;
+        this.obScore = obScore;
+        this.canonicalSmiles = canonicalSmiles;
+        this.alias = alias;
+        this.pubchemId = pubchemId;
+        this.casId = casId;
+        this.moleculeWeight = moleculeWeight;
+        this.drugbankId = drugbankId;
+
+    }
+
 
     public String getHerbName() {
         return herbName;
@@ -30,32 +60,14 @@ public class Compound {
         this.drugName = drugName;
     }
 
-    private String herbName;
-    private String drugName;
 
-    private Integer pubchemId;
-
-    private String casId;
-
-    private BigDecimal moleculeWeight;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    public Compound(String acmpdId, String moleculeName, BigDecimal obScore, String canonicalSmiles, String alias, Integer pubchemId, String casId, BigDecimal moleculeWeight, Date createTime, Date updateTime) {
-        this.acmpdId = acmpdId;
-        this.moleculeName = moleculeName;
-        this.obScore = obScore;
-        this.canonicalSmiles = canonicalSmiles;
-        this.alias = alias;
-        this.pubchemId = pubchemId;
-        this.casId = casId;
-        this.moleculeWeight = moleculeWeight;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+    public String getDrugbankId() {
+        return drugbankId;
     }
 
+    public void setDrugbankId(String drugbankId) {
+        this.drugbankId = drugbankId;
+    }
     public Compound() {
         super();
     }
@@ -76,11 +88,11 @@ public class Compound {
         this.moleculeName = moleculeName == null ? null : moleculeName.trim();
     }
 
-    public BigDecimal getObScore() {
+    public String getObScore() {
         return obScore;
     }
 
-    public void setObScore(BigDecimal obScore) {
+    public void setObScore(String obScore) {
         this.obScore = obScore;
     }
 
@@ -100,11 +112,11 @@ public class Compound {
         this.alias = alias == null ? null : alias.trim();
     }
 
-    public Integer getPubchemId() {
+    public String getPubchemId() {
         return pubchemId;
     }
 
-    public void setPubchemId(Integer pubchemId) {
+    public void setPubchemId(String pubchemId) {
         this.pubchemId = pubchemId;
     }
 
@@ -116,27 +128,13 @@ public class Compound {
         this.casId = casId == null ? null : casId.trim();
     }
 
-    public BigDecimal getMoleculeWeight() {
+    public String getMoleculeWeight() {
         return moleculeWeight;
     }
 
-    public void setMoleculeWeight(BigDecimal moleculeWeight) {
+    public void setMoleculeWeight(String moleculeWeight) {
         this.moleculeWeight = moleculeWeight;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -13,7 +13,6 @@ public class JwtUtil {
     public static String generateToken(String signingKey, String subject) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-
         JwtBuilder builder = Jwts.builder()
                 .setSubject(subject)  //username
                 .setIssuedAt(now)   //date
@@ -24,7 +23,8 @@ public class JwtUtil {
     }
 
     public static String parseToken(HttpServletRequest httpServletRequest, String jwtTokenCookieName, String signingKey){
-        String token = CookieUtil.getValue(httpServletRequest, jwtTokenCookieName);
+//        String token = CookieUtil.getValue(httpServletRequest, jwtTokenCookieName);
+        String token = httpServletRequest.getHeader(jwtTokenCookieName);
         if(token == null) {
             return null;
         }

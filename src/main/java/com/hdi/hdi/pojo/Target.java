@@ -5,9 +5,7 @@ import java.util.Date;
 public class Target {
     private String targetId;
 
-    private String acmpdId;
 
-    private String targetCmpdId;
 
     private String geneSymbol;
 
@@ -39,20 +37,14 @@ public class Target {
 
 
 
-    private Date createTime;
 
-    private Date updateTime;
-
-    public Target(String targetId, String acmpdId, String targetCmpdId, String geneSymbol, String alias, String uniprotId, String species, Date createTime, Date updateTime) {
+    public Target(String targetId,  String geneSymbol, String alias, String uniprotId, String species, Date createTime, Date updateTime) {
         this.targetId = targetId;
-        this.acmpdId = acmpdId;
-        this.targetCmpdId = targetCmpdId;
         this.geneSymbol = geneSymbol;
         this.alias = alias;
         this.uniprotId = uniprotId;
         this.species = species;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
     }
 
     public Target() {
@@ -65,22 +57,6 @@ public class Target {
 
     public void setTargetId(String targetId) {
         this.targetId = targetId == null ? null : targetId.trim();
-    }
-
-    public String getAcmpdId() {
-        return acmpdId;
-    }
-
-    public void setAcmpdId(String acmpdId) {
-        this.acmpdId = acmpdId == null ? null : acmpdId.trim();
-    }
-
-    public String getTargetCmpdId() {
-        return targetCmpdId;
-    }
-
-    public void setTargetCmpdId(String targetCmpdId) {
-        this.targetCmpdId = targetCmpdId == null ? null : targetCmpdId.trim();
     }
 
     public String getGeneSymbol() {
@@ -115,19 +91,5 @@ public class Target {
         this.species = species == null ? null : species.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -1,32 +1,41 @@
 package com.hdi.hdi.service;
 
+import com.hdi.hdi.common.CustomException.TransactionException;
 import com.hdi.hdi.common.ServerResponse;
 import com.hdi.hdi.pojo.*;
+import org.json.JSONException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface IQueryService {
 
-    ServerResponse<Formula> formula(String formulaName , String group ,String subGroup) ;
+    ServerResponse<Formula> formula(String formulaName , String group ,String subGroup) throws TransactionException;
 
-    ServerResponse<Herb> herb(String chineseSimplified, String classChinese);
+    ServerResponse<Herb> herb(String chineseSimplified, String classChinese) throws TransactionException;
 
-    List<TargetCompound> herbAcmpdCompound(String chineseSimplified, String classChinese , int page);
+    void herbAcmpdCompound(HttpServletResponse httpServletResponse, String chineseSimplified, String classChinese , int page) throws TransactionException, IOException, JSONException;
 
-    ServerResponse<Drug> drug(String drugName, String drugIndication , String route);
+    List<Drug> drug(String drugName, String drugIndication , String route) throws TransactionException;
 
-    List<TargetCompound> drugAcmpdCompound(String drugName, String drugIndication , String route,int page);
+    void drugAcmpdCompound(HttpServletResponse httpServletResponse,String drugName, String drugIndication , String route,int page) throws TransactionException, IOException;
 
-    ServerResponse<Compound> compound(String moleculeName, String obScore, String moleculeWeight);
+    ServerResponse<Compound> compound(String moleculeName, String obScore, String moleculeWeight) throws TransactionException;
 
-    List<TargetCompound> compoundToAcmpd(String moleculeName, String obScore, String moleculeWeight, int page);
+    void compoundToAcmpd(HttpServletResponse httpServletResponse ,String moleculeName, String obScore, String moleculeWeight, int page) throws TransactionException, IOException;
 
-    ServerResponse<Target> target(String geneSymbol, String species);
+    ServerResponse<Target> target(String geneSymbol, String species) throws TransactionException;
 
-    List<Map<String,String>>  targetToAcmpd(String geneSymbol, String species, int page);
+    void  targetToAcmpd(HttpServletResponse httpServletResponse ,String geneSymbol, String species, int page) throws TransactionException, IOException;
 
-    ServerResponse<HDInteraction> hdInteraction(String herbOrFormulaName, String drugName);
+    ServerResponse<HDInteraction> hdInteraction(String herbOrFormulaName, String drugName) throws TransactionException;
+
+
+
+
 }

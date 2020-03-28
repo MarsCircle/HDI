@@ -17,9 +17,10 @@ public class TargetCompound {
 
     private String reference;
 
-    private Date createTime;
 
-    private Date updateTime;
+//    int countTargetCompound ;
+//    int pageCount ;
+
 
     public String getGeneSymbol() {
         return geneSymbol;
@@ -49,8 +50,7 @@ public class TargetCompound {
         this.relation = relation;
         this.species = species;
         this.reference = reference;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
     }
 
     public TargetCompound() {
@@ -113,19 +113,5 @@ public class TargetCompound {
         this.reference = reference == null ? null : reference.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -6,9 +6,7 @@
     <idArg column="formula_herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
     <arg column="formula_id" jdbcType="VARCHAR" javaType="java.lang.String" />
     <arg column="herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-    <arg column="formula_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-    <arg column="herb_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-    <arg column="herb_quantity" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    <arg column="herb_quantity" jdbcType="VARCHAR" javaType="java.lang.String" />
     <arg column="herb_quantity_unit" jdbcType="VARCHAR" javaType="java.lang.String" />
     <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
     <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -17,7 +15,7 @@
 </resultMap>
 
   <sql id="Base_Column_List" >
-    formula_herb_id, formula_id, herb_id, formula_name, herb_name, herb_quantity, herb_quantity_unit, 
+    formula_herb_id, formula_id, herb_id, herb_quantity, herb_quantity_unit,
     `source`, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -32,11 +30,11 @@
   </delete>
   <insert id="insert" parameterType="com.hdi.hdi.pojo.FormulaHerb" >
     insert into formula_herb (formula_herb_id, formula_id, herb_id, 
-      formula_name, herb_name, herb_quantity, 
+      herb_quantity,
       herb_quantity_unit, source, create_time, 
       update_time)
     values (#{formulaHerbId,jdbcType=VARCHAR}, #{formulaId,jdbcType=VARCHAR}, #{herbId,jdbcType=VARCHAR}, 
-      #{formulaName,jdbcType=VARCHAR}, #{herbName,jdbcType=VARCHAR}, #{herbQuantity,jdbcType=DECIMAL}, 
+      #{herbQuantity,jdbcType=VARCHAR},
       #{herbQuantityUnit,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -52,12 +50,7 @@
       <if test="herbId != null" >
         herb_id,
       </if>
-      <if test="formulaName != null" >
-        formula_name,
-      </if>
-      <if test="herbName != null" >
-        herb_name,
-      </if>
+
       <if test="herbQuantity != null" >
         herb_quantity,
       </if>
@@ -84,14 +77,9 @@
       <if test="herbId != null" >
         #{herbId,jdbcType=VARCHAR},
       </if>
-      <if test="formulaName != null" >
-        #{formulaName,jdbcType=VARCHAR},
-      </if>
-      <if test="herbName != null" >
-        #{herbName,jdbcType=VARCHAR},
-      </if>
+
       <if test="herbQuantity != null" >
-        #{herbQuantity,jdbcType=DECIMAL},
+        #{herbQuantity,jdbcType=VARCHAR},
       </if>
       <if test="herbQuantityUnit != null" >
         #{herbQuantityUnit,jdbcType=VARCHAR},
@@ -116,14 +104,9 @@
       <if test="herbId != null" >
         herb_id = #{herbId,jdbcType=VARCHAR},
       </if>
-      <if test="formulaName != null" >
-        formula_name = #{formulaName,jdbcType=VARCHAR},
-      </if>
-      <if test="herbName != null" >
-        herb_name = #{herbName,jdbcType=VARCHAR},
-      </if>
+
       <if test="herbQuantity != null" >
-        herb_quantity = #{herbQuantity,jdbcType=DECIMAL},
+        herb_quantity = #{herbQuantity,jdbcType=VARCHAR},
       </if>
       <if test="herbQuantityUnit != null" >
         herb_quantity_unit = #{herbQuantityUnit,jdbcType=VARCHAR},
@@ -144,9 +127,7 @@
     update formula_herb
     set formula_id = #{formulaId,jdbcType=VARCHAR},
       herb_id = #{herbId,jdbcType=VARCHAR},
-      formula_name = #{formulaName,jdbcType=VARCHAR},
-      herb_name = #{herbName,jdbcType=VARCHAR},
-      herb_quantity = #{herbQuantity,jdbcType=DECIMAL},
+      herb_quantity = #{herbQuantity,jdbcType=VARCHAR},
       herb_quantity_unit = #{herbQuantityUnit,jdbcType=VARCHAR},
       source = #{source,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -156,9 +137,9 @@
 
   <select id="selectFormulaCompose" parameterType="string" resultType="map">
     SELECT
-    herb_name ,herb_quantity,herb_quantity_unit
+    herb_id ,herb_quantity,herb_quantity_unit
     from formula_herb
-    where formula_name = #{formulaName}
+    where formula_id = #{formulaId}
   </select>
 
 

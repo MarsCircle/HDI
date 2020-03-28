@@ -154,8 +154,23 @@
     SELECT
     <include refid="Base_Column_List" />
     from target_compound
-    where acmpd_id = #{acmpdId}
-    AND target_id = #{targetId}
+    where acmpd_id = #{acmpdId} and
+    target_id = #{targetId}
+
   </select>
 
+
+  <select id="targetCompoundCount" resultType="int">
+    SELECT COUNT(*) FROM target_compound where acmpd_id = #{acmpdId}
+  </select>
+
+
+  <select id="selectAcmpdId" resultType="string">
+    SELECT
+    acmpd_id
+    from target_compound
+    where
+    target_id = #{targetId}
+
+  </select>
 </mapper>

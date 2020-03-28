@@ -4,16 +4,14 @@
   <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.HDCompound" >
     <constructor >
       <idArg column="hd_acmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="drug_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="herb_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="herb_drug_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="acmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="source" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    hd_acmpd_id, drug_id, herb_id, acmpd_id, source, create_time, update_time
+    hd_acmpd_id, herb_drug_id, acmpd_id, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
@@ -26,11 +24,11 @@
     where hd_acmpd_id = #{hdAcmpdId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.hdi.hdi.pojo.HDCompound" >
-    insert into hd_compound (hd_acmpd_id, drug_id, herb_id,
-      acmpd_id, source, create_time,
+    insert into hd_compound (hd_acmpd_id, herb_drug_id,
+      acmpd_id, create_time,
       update_time)
-    values (#{hdAcmpdId,jdbcType=VARCHAR}, #{drugId,jdbcType=VARCHAR}, #{herbId,jdbcType=VARCHAR},
-      #{acmpdId,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    values (#{hdAcmpdId,jdbcType=VARCHAR}, #{herb_drug_id,jdbcType=VARCHAR},
+      #{acmpdId,jdbcType=VARCHAR},  #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.HDCompound" >
@@ -39,18 +37,14 @@
       <if test="hdAcmpdId != null" >
         hd_acmpd_id,
       </if>
-      <if test="drugId != null" >
-        drug_id,
+      <if test="herbDrugId != null" >
+        herb_drug_id,
       </if>
-      <if test="herbId != null" >
-        herb_id,
-      </if>
+
       <if test="acmpdId != null" >
         acmpd_id,
       </if>
-      <if test="source != null" >
-        source,
-      </if>
+
       <if test="createTime != null" >
         create_time,
       </if>
@@ -62,18 +56,14 @@
       <if test="hdAcmpdId != null" >
         #{hdAcmpdId,jdbcType=VARCHAR},
       </if>
-      <if test="drugId != null" >
-        #{drugId,jdbcType=VARCHAR},
+      <if test="herbDrugId != null" >
+        #{herb_drug_id,jdbcType=VARCHAR},
       </if>
-      <if test="herbId != null" >
-        #{herbId,jdbcType=VARCHAR},
-      </if>
+
       <if test="acmpdId != null" >
         #{acmpdId,jdbcType=VARCHAR},
       </if>
-      <if test="source != null" >
-        #{source,jdbcType=VARCHAR},
-      </if>
+
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -85,18 +75,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.HDCompound" >
     update hd_compound
     <set >
-      <if test="drugId != null" >
-        drug_id = #{drugId,jdbcType=VARCHAR},
+      <if test="herbDrugId != null" >
+        herb_drug_id = #{herbDrugId,jdbcType=VARCHAR},
       </if>
-      <if test="herbId != null" >
-        herb_id = #{herbId,jdbcType=VARCHAR},
-      </if>
+
       <if test="acmpdId != null" >
         acmpd_id = #{acmpdId,jdbcType=VARCHAR},
       </if>
-      <if test="source != null" >
-        source = #{source,jdbcType=VARCHAR},
-      </if>
+
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -108,20 +94,18 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.HDCompound" >
     update hd_compound
-    set drug_id = #{drugId,jdbcType=VARCHAR},
-      herb_id = #{herbId,jdbcType=VARCHAR},
+    set
+      herb_drug_id = #{herbDrugId,jdbcType=VARCHAR},
       acmpd_id = #{acmpdId,jdbcType=VARCHAR},
-      source = #{source,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where hd_acmpd_id = #{hdAcmpdId,jdbcType=VARCHAR}
   </update>
 
 
-
-  <select id="selectId" parameterType="string" resultType="map">
+  <select id="selectId" parameterType="string" resultType="string">
     SELECT
-    drug_id , herb_id
+    herb_drug_id
     from hd_compound
     where acmpd_id = #{acmpdId}
   </select>
@@ -130,14 +114,14 @@
     SELECT
     acmpd_id
     from hd_compound
-    where herb_id = #{herbId}
+    where herb_drug_id = #{herbDrugId}
   </select>
 
-  <select id="selectAcmpdIdByDrugId" parameterType="string" resultType="string">
-    SELECT
-    acmpd_id
-    from hd_compound
-    where drug_id = #{drugId}
-  </select>
+<!--  <select id="selectAcmpdIdByDrugId" parameterType="string" resultType="string">-->
+<!--    SELECT-->
+<!--    acmpd_id-->
+<!--    from hd_compound-->
+<!--    where herb_drug_id = #{herbrug_id}-->
+<!--  </select>-->
 
 </mapper>

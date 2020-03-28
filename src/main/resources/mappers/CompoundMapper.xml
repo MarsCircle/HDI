@@ -5,18 +5,19 @@
     <constructor >
       <idArg column="acmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="molecule_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="ob_score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="ob_score" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="canonical_smiles" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="alias" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="pubchem_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pubchem_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="drugbank_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="cas_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="molecule_weight" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="molecule_weight" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    acmpd_id, molecule_name, ob_score, canonical_smiles, alias, pubchem_id, cas_id, molecule_weight, 
+    acmpd_id, molecule_name, ob_score, canonical_smiles, drugbank_id,alias, pubchem_id, cas_id, molecule_weight,
     create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -31,12 +32,12 @@
   </delete>
   <insert id="insert" parameterType="com.hdi.hdi.pojo.Compound" >
     insert into hdi_compound (acmpd_id, molecule_name, ob_score, 
-      canonical_smiles, alias, pubchem_id, 
-      cas_id, molecule_weight, create_time, 
+      canonical_smiles, alias, pubchem_id, drugbank_id
+      cas_id, molecule_weight, create_time,
       update_time)
-    values (#{acmpdId,jdbcType=VARCHAR}, #{moleculeName,jdbcType=VARCHAR}, #{obScore,jdbcType=DECIMAL}, 
-      #{canonicalSmiles,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{pubchemId,jdbcType=INTEGER}, 
-      #{casId,jdbcType=VARCHAR}, #{moleculeWeight,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{acmpdId,jdbcType=VARCHAR}, #{moleculeName,jdbcType=VARCHAR}, #{obScore,jdbcType=VARCHAR},
+      #{canonicalSmiles,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR},#{drugbank_id,jdbcType=VARCHAR}, #{pubchemId,jdbcType=VARCHAR},
+      #{casId,jdbcType=VARCHAR}, #{moleculeWeight,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.Compound" >
@@ -81,7 +82,7 @@
         #{moleculeName,jdbcType=VARCHAR},
       </if>
       <if test="obScore != null" >
-        #{obScore,jdbcType=DECIMAL},
+        #{obScore,jdbcType=VARCHAR},
       </if>
       <if test="canonicalSmiles != null" >
         #{canonicalSmiles,jdbcType=VARCHAR},
@@ -90,13 +91,13 @@
         #{alias,jdbcType=VARCHAR},
       </if>
       <if test="pubchemId != null" >
-        #{pubchemId,jdbcType=INTEGER},
+        #{pubchemId,jdbcType=VARCHAR},
       </if>
       <if test="casId != null" >
         #{casId,jdbcType=VARCHAR},
       </if>
       <if test="moleculeWeight != null" >
-        #{moleculeWeight,jdbcType=DECIMAL},
+        #{moleculeWeight,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -113,7 +114,7 @@
         molecule_name = #{moleculeName,jdbcType=VARCHAR},
       </if>
       <if test="obScore != null" >
-        ob_score = #{obScore,jdbcType=DECIMAL},
+        ob_score = #{obScore,jdbcType=VARCHAR},
       </if>
       <if test="canonicalSmiles != null" >
         canonical_smiles = #{canonicalSmiles,jdbcType=VARCHAR},
@@ -122,13 +123,13 @@
         alias = #{alias,jdbcType=VARCHAR},
       </if>
       <if test="pubchemId != null" >
-        pubchem_id = #{pubchemId,jdbcType=INTEGER},
+        pubchem_id = #{pubchemId,jdbcType=VARCHAR},
       </if>
       <if test="casId != null" >
         cas_id = #{casId,jdbcType=VARCHAR},
       </if>
       <if test="moleculeWeight != null" >
-        molecule_weight = #{moleculeWeight,jdbcType=DECIMAL},
+        molecule_weight = #{moleculeWeight,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -142,12 +143,12 @@
   <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.Compound" >
     update hdi_compound
     set molecule_name = #{moleculeName,jdbcType=VARCHAR},
-      ob_score = #{obScore,jdbcType=DECIMAL},
+      ob_score = #{obScore,jdbcType=VARCHAR},
       canonical_smiles = #{canonicalSmiles,jdbcType=VARCHAR},
       alias = #{alias,jdbcType=VARCHAR},
-      pubchem_id = #{pubchemId,jdbcType=INTEGER},
+      pubchem_id = #{pubchemId,jdbcType=VARCHAR},
       cas_id = #{casId,jdbcType=VARCHAR},
-      molecule_weight = #{moleculeWeight,jdbcType=DECIMAL},
+      molecule_weight = #{moleculeWeight,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where acmpd_id = #{acmpdId,jdbcType=VARCHAR}

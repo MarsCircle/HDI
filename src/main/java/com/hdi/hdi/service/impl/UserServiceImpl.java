@@ -1,6 +1,8 @@
 package com.hdi.hdi.service.impl;
 
 import com.hdi.hdi.common.Const;
+import com.hdi.hdi.common.CustomException.EmBusinessError;
+import com.hdi.hdi.common.CustomException.TransactionException;
 import com.hdi.hdi.common.ServerResponse;
 import com.hdi.hdi.dao.UserMapper;
 import com.hdi.hdi.pojo.User;
@@ -20,7 +22,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.Random;
 
-//import com.hdi.hdi.util.SendEmail;
 
 @Service("iUserService")
 public class UserServiceImpl implements IUserService {
@@ -33,15 +34,15 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public ServerResponse<User> login(String email, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ServerResponse<User> login(String email, String password) throws InvalidKeySpecException, NoSuchAlgorithmException, TransactionException {
         int resultCount = userMapper.checkEmail(email);
         if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage("该邮箱未注册");
+            throw new TransactionException(EmBusinessError.EMAIL_NOT_REGISTER);
         }
         User user = userMapper.selectLogin(email);
         String hash = user.getPassword();
         if (!PasswordHash.validatePassword(password, hash)) { //此处验证是否与加盐hash过的密码一致
-            return ServerResponse.createByErrorMessage("密码错误");
+            throw new TransactionException(EmBusinessError.USER_NOT_MATCH);
         }
         user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登陆成功", user);
@@ -57,10 +58,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ServerResponse<String> registerNormal(String verificationCode , String username, String password, String email, String phone, String occupation,String nameChinese ,String address) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ServerResponse<String> registerNormal(String verificationCode , String username, String password, String email, String phone, String occupation,String nameChinese ,String address) throws InvalidKeySpecException, NoSuchAlgorithmException, TransactionException {
         //判断参数是否为空值
         if (StringUtils.isEmpty(verificationCode) ||StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation)  ) {
-            return ServerResponse.createByErrorMessage("参数不可为空");
+            throw new TransactionException(EmBusinessError.REGISTER_NULL_ERROR);
         }
         checkVerificationCode(email,verificationCode);
         User user = new User(username, password, email, phone, occupation, nameChinese, address);
@@ -74,16 +75,16 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(PasswordHash.createHash(user.getPassword()));
         int resultCount = userMapper.insert(user);
         if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage("注册失败");
+            throw new TransactionException(EmBusinessError.REGISTER_ERROR);
         }
         return ServerResponse.createBySuccessMessage("注册成功");
         }
 
 
-    public ServerResponse<String> registerMedical(String verificationCode, String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ServerResponse<String> registerMedical(String verificationCode, String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException, TransactionException {
         //判断参数是否为空值
         if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation) ||  StringUtils.isEmpty(company)||  StringUtils.isEmpty(workPermit)  ) {
-            return ServerResponse.createByErrorMessage("参数不可为空");
+            throw new TransactionException(EmBusinessError.REGISTER_NULL_ERROR);
         }
         checkVerificationCode(email,verificationCode);
         User user = new User(username, password, email, phone, occupation, nameChinese, address, company,  workPermit);
@@ -97,16 +98,16 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(PasswordHash.createHash(user.getPassword()));
         int resultCount = userMapper.insert(user);
         if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage("注册失败");
+            throw new TransactionException(EmBusinessError.REGISTER_ERROR);
         }
         return ServerResponse.createBySuccessMessage("注册请求已发送，核实中");
     }
 
 
-    public ServerResponse<String> registerResearcher(String verificationCode, String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ServerResponse<String> registerResearcher(String verificationCode, String username, String password, String email, String phone, String occupation, String nameChinese, String address, String company, byte[] workPermit) throws InvalidKeySpecException, NoSuchAlgorithmException, TransactionException {
         //判断参数是否为空值
         if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)  || StringUtils.isEmpty(phone) ||  StringUtils.isEmpty(occupation) ||  StringUtils.isEmpty(company)||  StringUtils.isEmpty(workPermit)  ) {
-            return ServerResponse.createByErrorMessage("参数不可为空");
+            throw new TransactionException(EmBusinessError.REGISTER_NULL_ERROR);
         }
         checkVerificationCode(email,verificationCode);
         User user = new User(username, password, email, phone, occupation, nameChinese, address, company,  workPermit);
@@ -121,56 +122,50 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(PasswordHash.createHash(user.getPassword()));
         int resultCount = userMapper.insert(user);
         if (resultCount == 0) {
-            return ServerResponse.createByErrorMessage("注册失败");
+            throw new TransactionException(EmBusinessError.REGISTER_ERROR);
         }
         return ServerResponse.createBySuccessMessage("注册请求已发送，核实中");
     }
 
 
-    public ServerResponse<String> checkVerificationCode(String email , String verificationCode){
+    public ServerResponse<String> checkVerificationCode(String email , String verificationCode) throws TransactionException {
         //判断邮箱验证码是否有误
         Jedis jedis = new Jedis();
         String verificationCodeRight = jedis.get(email + "_verificationCode");
         if(verificationCodeRight == null){
-            return ServerResponse.createByErrorMessage("邮箱验证码已过期");
+            throw new TransactionException(EmBusinessError.VERIFICATIONCODE_OUT_OF_DATE);
         }
         if(!verificationCode.equals(verificationCodeRight)){
-            return ServerResponse.createByErrorMessage("邮箱验证码有误！注册失败");
+            throw new TransactionException(EmBusinessError.VERIFICATIONCODE_ERROR);
         }
         return ServerResponse.createBySuccess();
     }
 
-    public ServerResponse<String> checkValid(String str , String type){
+    public ServerResponse<String> checkValid(String str , String type) throws TransactionException {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(type))
         {
-            if (Const.USERNAME.equals(type)){
-                int resultCount = userMapper.checkUsername(str);
-                if (resultCount > 0) {
-                    return ServerResponse.createByErrorMessage("用户名已存在");
-                }
-            }
             if (Const.EMAIL.equals(type)){
                 int resultCount = userMapper.checkEmail(str);
                 if(resultCount > 0 ){
-                    return ServerResponse.createByErrorMessage("该邮箱已被注册");
+                    throw new TransactionException(EmBusinessError.EMAIL_REGISTER_EXIST);
                 }
             }
-        }else{
-            return ServerResponse.createByErrorMessage("参数错误");
         }
         return ServerResponse.createBySuccessMessage("校验成功");
     }
 
 
 
-    public boolean checkEmail(String email) {
-
+    public boolean checkEmail(String email) throws TransactionException {
+        if(email == null){
+            throw new TransactionException(EmBusinessError.EMAIL_NULL_ERROR);
+        }
         StringBuilder ValidateCode = new StringBuilder();
         char[] ch = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
                 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
         Random random = new Random();
-        for (int i = 0; i <6; i++){
+        for (int i = 0; i < 6; i++){
             char num = ch[random.nextInt(ch.length)];
             ValidateCode.append(num);
         }
@@ -191,7 +186,7 @@ public class UserServiceImpl implements IUserService {
 
 
 
-    public boolean sendEmail(String email , String content) {
+    public boolean sendEmail(String email , String content) throws TransactionException {
         //建立邮件消息
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = null;
@@ -216,8 +211,9 @@ public class UserServiceImpl implements IUserService {
             mailSender.send(message);
             return true;
         } catch (MessagingException e) {
-            return false;
+            throw new TransactionException(EmBusinessError.EMAIL_CODE_ERROR);
         }
     }
+
 }
 

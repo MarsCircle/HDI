@@ -13,8 +13,6 @@
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.hdi.hdi.pojo.User" >
@@ -29,14 +27,12 @@
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="work_permit" jdbcType="LONGVARBINARY" javaType="_byte[]" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, username, password, email, occupation, name_chinese, phone, address, company, 
-    role, create_time, update_time
+    role
   </sql>
   <sql id="Blob_Column_List" >
     work_permit
@@ -54,16 +50,14 @@
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hdi.hdi.pojo.User" >
-    insert into hdi_user (user_id, username, password, 
+    insert into hdi_user ( username, password,
       email, occupation, name_chinese, 
       phone, address, company, 
-      role,  create_time,
-      update_time, work_permit)
-    values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      role,  work_permit)
+    values ( #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR}, #{occupation,jdbcType=VARCHAR}, #{nameChinese,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
-      #{role,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-      #{updateTime,jdbcType=TIMESTAMP}, #{workPermit,jdbcType=LONGVARBINARY})
+      #{role,jdbcType=INTEGER},  #{workPermit,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hdi.hdi.pojo.User" >
     insert into hdi_user
@@ -99,12 +93,7 @@
         role,
       </if>
 
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
+
       <if test="workPermit != null" >
         work_permit,
       </if>
@@ -141,12 +130,7 @@
         #{role,jdbcType=INTEGER},
       </if>
 
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+
       <if test="workPermit != null" >
         #{workPermit,jdbcType=LONGVARBINARY},
       </if>
@@ -183,12 +167,7 @@
         role = #{role,jdbcType=INTEGER},
       </if>
 
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+
       <if test="workPermit != null" >
         work_permit = #{workPermit,jdbcType=LONGVARBINARY},
       </if>
@@ -206,8 +185,6 @@
       address = #{address,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
       work_permit = #{workPermit,jdbcType=LONGVARBINARY}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
@@ -221,9 +198,7 @@
       phone = #{phone,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
-      role = #{role,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      role = #{role,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 

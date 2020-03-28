@@ -4,6 +4,8 @@ import com.hdi.hdi.pojo.Drug;
 import com.hdi.hdi.pojo.Herb;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface DrugMapper {
     int deleteByPrimaryKey(String drugId);
@@ -20,9 +22,9 @@ public interface DrugMapper {
 
     int checkDrug(String drugName);
 
-    Drug selectDrug(String drugName, String drugIndication, String route);
+    List<Drug> selectDrug(String drugName, String drugIndication, String route);
 
-    String selectDrugId(String drugName, String drugIndication, String route);
+    List<String> selectDrugId(String drugName, String drugIndication, String route);
 
     String selectDrugName(String drug_id);
 

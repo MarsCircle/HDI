@@ -5,26 +5,21 @@ import java.util.Date;
 public class HDCompound {
     private String hdAcmpdId;
 
-    private String drugId;
+    private String herbDrugId;
 
-    private String herbId;
 
     private String acmpdId;
 
-    private String source;
 
-    private Date createTime;
 
-    private Date updateTime;
 
-    public HDCompound(String hdAcmpdId, String drugId, String herbId, String acmpdId, String source, Date createTime, Date updateTime) {
+    public HDCompound(String hdAcmpdId, String herbDrugId, String acmpdId, String source, Date createTime, Date updateTime) {
         this.hdAcmpdId = hdAcmpdId;
-        this.drugId = drugId;
-        this.herbId = herbId;
+        this.herbDrugId = herbDrugId;
+
         this.acmpdId = acmpdId;
-        this.source = source;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
+
     }
 
     public HDCompound() {
@@ -39,21 +34,15 @@ public class HDCompound {
         this.hdAcmpdId = hdAcmpdId == null ? null : hdAcmpdId.trim();
     }
 
-    public String getDrugId() {
-        return drugId;
+    public String getherbDrugId() {
+        return herbDrugId;
     }
 
-    public void setDrugId(String drugId) {
-        this.drugId = drugId == null ? null : drugId.trim();
+    public void setherbDrugId(String drugId) {
+        this.herbDrugId = drugId == null ? null : drugId.trim();
     }
 
-    public String getHerbId() {
-        return herbId;
-    }
 
-    public void setHerbId(String herbId) {
-        this.herbId = herbId == null ? null : herbId.trim();
-    }
 
     public String getAcmpdId() {
         return acmpdId;
@@ -63,27 +52,7 @@ public class HDCompound {
         this.acmpdId = acmpdId == null ? null : acmpdId.trim();
     }
 
-    public String getSource() {
-        return source;
-    }
 
-    public void setSource(String source) {
-        this.source = source == null ? null : source.trim();
-    }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

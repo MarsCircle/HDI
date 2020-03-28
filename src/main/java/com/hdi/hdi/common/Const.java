@@ -24,6 +24,12 @@ public class Const {
     public static final int SALT_INDEX = 1;
     public static final int PBKDF2_INDEX = 2;
 
+//    private static final String jwtTokenCookieName = "JWT-TOKEN";
+
+    public static final String JWT_TOKEN_NAME = "JWT-TOKEN";
+
+    public static final String SIGNINGKEY = "signingKey";
+
 
     
 

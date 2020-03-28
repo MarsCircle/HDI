@@ -19,7 +19,7 @@ public class Herb {
 
     private String meridians;
 
-    private String function;
+    private String herbFunction;
 
     private String classChinese;
 
@@ -27,11 +27,9 @@ public class Herb {
 
     private String usePart;
 
-    private Date createTime;
 
-    private Date updateTime;
 
-    public Herb(String herbId, String chineseSimplified, String chineseTraditional, String pinyinName, String latinName, String englishName, String properties, String meridians, String function, String classChinese, String classEnglish, String usePart, Date createTime, Date updateTime) {
+    public Herb(String herbId, String chineseSimplified, String chineseTraditional, String pinyinName, String latinName, String englishName, String properties, String meridians, String herbFunction, String classChinese, String classEnglish, String usePart, Date createTime, Date updateTime) {
         this.herbId = herbId;
         this.chineseSimplified = chineseSimplified;
         this.chineseTraditional = chineseTraditional;
@@ -40,12 +38,11 @@ public class Herb {
         this.englishName = englishName;
         this.properties = properties;
         this.meridians = meridians;
-        this.function = function;
+        this.herbFunction = herbFunction;
         this.classChinese = classChinese;
         this.classEnglish = classEnglish;
         this.usePart = usePart;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
     }
 
     public Herb() {
@@ -116,12 +113,12 @@ public class Herb {
         this.meridians = meridians == null ? null : meridians.trim();
     }
 
-    public String getFunction() {
-        return function;
+    public String getherbFunction() {
+        return herbFunction;
     }
 
-    public void setFunction(String function) {
-        this.function = function == null ? null : function.trim();
+    public void setherbFunction(String herbFunction) {
+        this.herbFunction = herbFunction == null ? null : herbFunction.trim();
     }
 
     public String getClassChinese() {
@@ -148,19 +145,5 @@ public class Herb {
         this.usePart = usePart == null ? null : usePart.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -10,31 +10,24 @@ public class FormulaHerb {
 
     private String herbId;
 
-    private String formulaName;
 
-    private String herbName;
-
-    private BigDecimal herbQuantity;
+    private String herbQuantity;
 
     private String herbQuantityUnit;
 
     private String source;
 
-    private Date createTime;
 
-    private Date updateTime;
 
-    public FormulaHerb(String formulaHerbId, String formulaId, String herbId, String formulaName, String herbName, BigDecimal herbQuantity, String herbQuantityUnit, String source, Date createTime, Date updateTime) {
+    public FormulaHerb(String formulaHerbId, String formulaId, String herbId,  String herbQuantity, String herbQuantityUnit, String source, Date createTime, Date updateTime) {
         this.formulaHerbId = formulaHerbId;
         this.formulaId = formulaId;
         this.herbId = herbId;
-        this.formulaName = formulaName;
-        this.herbName = herbName;
+
         this.herbQuantity = herbQuantity;
         this.herbQuantityUnit = herbQuantityUnit;
         this.source = source;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
     }
 
     public FormulaHerb() {
@@ -65,27 +58,13 @@ public class FormulaHerb {
         this.herbId = herbId == null ? null : herbId.trim();
     }
 
-    public String getFormulaName() {
-        return formulaName;
-    }
 
-    public void setFormulaName(String formulaName) {
-        this.formulaName = formulaName == null ? null : formulaName.trim();
-    }
 
-    public String getHerbName() {
-        return herbName;
-    }
-
-    public void setHerbName(String herbName) {
-        this.herbName = herbName == null ? null : herbName.trim();
-    }
-
-    public BigDecimal getHerbQuantity() {
+    public String getHerbQuantity() {
         return herbQuantity;
     }
 
-    public void setHerbQuantity(BigDecimal herbQuantity) {
+    public void setHerbQuantity(String herbQuantity) {
         this.herbQuantity = herbQuantity;
     }
 
@@ -105,19 +84,5 @@ public class FormulaHerb {
         this.source = source == null ? null : source.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -1,27 +1,25 @@
 package com.hdi.hdi.controller.Query;
 
-import com.hdi.hdi.common.Const;
+import com.hdi.hdi.common.CustomException.TransactionException;
 import com.hdi.hdi.common.ServerResponse;
 import com.hdi.hdi.pojo.*;
 import com.hdi.hdi.service.IQueryService;
-import com.hdi.hdi.service.IUserService;
-import com.hdi.hdi.util.JWT.CookieUtil;
-import com.hdi.hdi.util.JWT.JwtUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.ToDoubleBiFunction;
 
 
 @Controller
@@ -41,7 +39,7 @@ public class QueryController {
          */
     @RequestMapping(value = "formula",method = RequestMethod.POST)
     @ResponseBody //序列化为json
-    public ServerResponse<Formula> formula(String formulaName , String group ,String subGroup) {
+    public ServerResponse<Formula> formula(String formulaName , String group ,String subGroup) throws TransactionException {
         return iQueryService.formula( formulaName , group , subGroup );
         }
 
@@ -54,8 +52,7 @@ public class QueryController {
      */
     @RequestMapping(value = "herb",method = RequestMethod.POST)
     @ResponseBody
-    //TODO : 这里参数先用是中文的，之后还得补上其它语言的
-    public ServerResponse<Herb> herb(String chineseSimplified , String classChinese ) {
+    public ServerResponse<Herb> herb(String chineseSimplified , String classChinese ) throws TransactionException {
         return iQueryService.herb( chineseSimplified , classChinese );
     }
 
@@ -68,8 +65,8 @@ public class QueryController {
      */
     @RequestMapping(value = "herbAcmpdCompound",method = RequestMethod.POST)
     @ResponseBody
-    public List<TargetCompound> herbAcmpdCompound(String chineseSimplified,String classChinese ,int page ) {
-        return iQueryService.herbAcmpdCompound( chineseSimplified  , classChinese ,page);
+    public void herbAcmpdCompound(HttpServletResponse httpServletResponse , String chineseSimplified, String classChinese , int page ) throws TransactionException, IOException, JSONException {
+        iQueryService.herbAcmpdCompound(httpServletResponse, chineseSimplified  , classChinese ,page);
     }
 
     /**
@@ -81,7 +78,7 @@ public class QueryController {
      */
     @RequestMapping(value = "drug",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<Drug> drug(String drugName, String drugIndication , String route) {
+    public List<Drug> drug(String drugName, String drugIndication , String route) throws TransactionException {
         return iQueryService.drug( drugName , drugIndication ,route);
     }
 
@@ -95,8 +92,8 @@ public class QueryController {
      */
     @RequestMapping(value = "drugAcmpdCompound",method = RequestMethod.POST)
     @ResponseBody
-    public List<TargetCompound> drugAcmpdCompound(String drugName, String drugIndication , String route,int page) {
-        return iQueryService.drugAcmpdCompound( drugName  , drugIndication ,route,page);
+    public void drugAcmpdCompound(HttpServletResponse httpServletResponse,String drugName, String drugIndication , String route,int page) throws TransactionException, IOException {
+        iQueryService.drugAcmpdCompound(httpServletResponse, drugName  , drugIndication ,route,page);
     }
 
 
@@ -109,7 +106,7 @@ public class QueryController {
      */
     @RequestMapping(value = "compound",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<Compound> compound(String moleculeName, String obScore , String moleculeWeight) {
+    public ServerResponse<Compound> compound(String moleculeName, String obScore , String moleculeWeight) throws TransactionException {
         return iQueryService.compound( moleculeName  , obScore ,moleculeWeight);
     }
 
@@ -123,8 +120,8 @@ public class QueryController {
      */
     @RequestMapping(value = "compoundToAcmpd",method = RequestMethod.POST)
     @ResponseBody
-    public List<TargetCompound> compoundToAcmpd(String moleculeName, String obScore , String moleculeWeight ,int page) {
-        return iQueryService.compoundToAcmpd( moleculeName  , obScore ,moleculeWeight,page);
+    public void compoundToAcmpd(HttpServletResponse httpServletResponse ,String moleculeName, String obScore , String moleculeWeight ,int page) throws TransactionException, IOException {
+         iQueryService.compoundToAcmpd( httpServletResponse,moleculeName  , obScore ,moleculeWeight,page);
     }
 
 
@@ -136,7 +133,7 @@ public class QueryController {
      */
     @RequestMapping(value = "target",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<Target> target(String geneSymbol, String species ) {
+    public ServerResponse<Target> target(String geneSymbol, String species ) throws TransactionException {
         return iQueryService.target( geneSymbol  , species );
     }
 
@@ -149,8 +146,8 @@ public class QueryController {
      */
     @RequestMapping(value = "targetToAcmpd",method = RequestMethod.POST)
     @ResponseBody
-    public List<Map<String,String>>  targetToAcmpd(String geneSymbol, String species ,int page) {
-        return iQueryService.targetToAcmpd( geneSymbol  , species ,page);
+    public void  targetToAcmpd(HttpServletResponse httpServletResponse , String geneSymbol, String species ,int page) throws TransactionException, IOException {
+        iQueryService.targetToAcmpd( httpServletResponse, geneSymbol  , species ,page);
     }
 
     /**
@@ -161,7 +158,7 @@ public class QueryController {
      */
     @RequestMapping(value = "hdInteraction",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<HDInteraction>  hdInteraction(String herbOrFormulaName, String drugName ) {
+    public ServerResponse<HDInteraction>  hdInteraction(String herbOrFormulaName, String drugName ) throws TransactionException {
         return iQueryService.hdInteraction( herbOrFormulaName  , drugName );
     }
 }

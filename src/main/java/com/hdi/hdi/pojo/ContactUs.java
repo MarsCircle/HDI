@@ -15,9 +15,7 @@ public class ContactUs {
 
     private String content;
 
-    private Date createTime;
 
-    private Date updateTime;
 
     public ContactUs(String type, String occupation, String phone, String email, String content) {
 
@@ -81,19 +79,5 @@ public class ContactUs {
         this.content = content == null ? null : content.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

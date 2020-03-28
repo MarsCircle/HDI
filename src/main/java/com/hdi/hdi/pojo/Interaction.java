@@ -15,9 +15,7 @@ public class Interaction {
 
     private String rating;
 
-    private Date createTime;
 
-    private Date updateTime;
 
     public Interaction(String herbDrugId, String drugId, String herbId, String interactions, String interactionsClass, String rating, Date createTime, Date updateTime) {
         this.herbDrugId = herbDrugId;
@@ -26,8 +24,7 @@ public class Interaction {
         this.interactions = interactions;
         this.interactionsClass = interactionsClass;
         this.rating = rating;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
     }
 
     public Interaction() {
@@ -82,19 +79,6 @@ public class Interaction {
         this.rating = rating == null ? null : rating.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

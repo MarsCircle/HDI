@@ -1,5 +1,7 @@
 package com.hdi.hdi.service.impl;
 
+import com.hdi.hdi.common.CustomException.EmBusinessError;
+import com.hdi.hdi.common.CustomException.TransactionException;
 import com.hdi.hdi.common.ServerResponse;
 import com.hdi.hdi.dao.*;
 import com.hdi.hdi.pojo.ContactUs;
@@ -17,13 +19,13 @@ public class ContactServiceImpl implements IContactService {
 
 
     @Override
-    public ServerResponse<String> contact(String type, String occupation, String phone, String email, String content) {
+    public ServerResponse<String> contact(String type, String occupation, String phone, String email, String content) throws TransactionException {
 
         ContactUs contactUs = new ContactUs(type, occupation, phone, email, content);
         if (contactUsMapper.insert(contactUs) == 1) {
             return ServerResponse.createBySuccess("已收到您的反馈");
         } else {
-            return ServerResponse.createByErrorMessage("反馈失败");
+            throw new TransactionException(EmBusinessError.CONTACT_ERROR);
         }
     }
 }

@@ -20,7 +20,11 @@ public interface TargetCompoundMapper {
 
     int updateByPrimaryKey(TargetCompound record);
 
+    int targetCompoundCount(@Param("acmpdId") String acmpdId);
+
     List<TargetCompound> selectTargetCompoundListByAcmpdId(@Param("acmpdId") String acmpdId, @Param("page") int page);
 
     TargetCompound selectTargetCompoundByAcmpdId(String acmpdId ,String targetId);
+
+    List<String> selectAcmpdId(String targetId);
 }

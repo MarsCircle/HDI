@@ -23,5 +23,5 @@ public interface TargetMapper {
 
     int checkTarget(String geneSymbol);
 
-    List<Target> selectTarget(String geneSymbol, String species);
+    Target selectTarget(String geneSymbol, String species);
 }

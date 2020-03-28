@@ -1,8 +1,25 @@
 package com.hdi.hdi.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+
+@JsonIgnoreProperties(value = {"password", "userId"})
 public class User {
+    public User(Long userId, String username, String password, String email, String occupation, String nameChinese, String phone, String address, String company, Integer role) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.occupation = occupation;
+        this.nameChinese = nameChinese;
+        this.phone = phone;
+        this.address = address;
+        this.company = company;
+        this.role = role;
+    }
+
     private Long userId;
 
     private String username;
@@ -23,9 +40,6 @@ public class User {
 
     private Integer role;
 
-    private Date createTime;
-
-    private Date updateTime;
 
     private byte[] workPermit;
 
@@ -40,8 +54,7 @@ public class User {
         this.address = address;
         this.company = company;
         this.role = role;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
         this.workPermit = null;
     }
 
@@ -57,14 +70,11 @@ public class User {
         this.address = address;
         this.company = company;
         this.role = role;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
         this.workPermit = workPermit;
     }
     public User() {
         super();
     }
-
 
     public User(String username, String password, String email, String phone, String occupation, String nameChinese, String address) {
         this.username = username;
@@ -74,7 +84,7 @@ public class User {
         this.nameChinese = nameChinese;
         this.phone = phone;
         this.address = address;
-        this.company = null;
+        this.company = "";
         this.workPermit= new byte[]{ };
         this.role = 0;
     }
@@ -170,24 +180,6 @@ public class User {
 
     public void setRole(Integer role) {
         this.role = role;
-    }
-
-
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public byte[] getWorkPermit() {

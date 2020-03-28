@@ -15,22 +15,18 @@ public class Drug {
 
     private String route;
 
-    private String drugbankId;
 
-    private Date createTime;
 
-    private Date updateTime;
 
-    public Drug(String drugId, String drugName, String drugIndication, String drugType, String drugClass, String route, String drugbankId, Date createTime, Date updateTime) {
+    public Drug(String drugId, String drugName, String drugIndication, String drugType, String drugClass, String route, Date createTime, Date updateTime) {
         this.drugId = drugId;
         this.drugName = drugName;
         this.drugIndication = drugIndication;
         this.drugType = drugType;
         this.drugClass = drugClass;
         this.route = route;
-        this.drugbankId = drugbankId;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
+
     }
 
     public Drug() {
@@ -85,27 +81,5 @@ public class Drug {
         this.route = route == null ? null : route.trim();
     }
 
-    public String getDrugbankId() {
-        return drugbankId;
-    }
 
-    public void setDrugbankId(String drugbankId) {
-        this.drugbankId = drugbankId == null ? null : drugbankId.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

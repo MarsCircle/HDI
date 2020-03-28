@@ -11,7 +11,7 @@
       <arg column="english_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="properties" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="meridians" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="function" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="herb_function" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="class_chinese" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="class_english" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="use_part" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -21,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     herb_id, chinese_simplified, chinese_traditional, pinyin_name, latin_name, english_name, 
-    properties, meridians, `function`, class_chinese, class_english, use_part, create_time,
+    properties, meridians, `herb_function`, class_chinese, class_english, use_part, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -37,12 +37,12 @@
   <insert id="insert" parameterType="com.hdi.hdi.pojo.Herb" >
     insert into hdi_herb (herb_id, chinese_simplified, chinese_traditional, 
       pinyin_name, latin_name, english_name, 
-      properties, meridians, function, 
+      properties, meridians, herb_function,
       class_chinese, class_english, use_part, 
       create_time, update_time)
     values (#{herbId,jdbcType=VARCHAR}, #{chineseSimplified,jdbcType=VARCHAR}, #{chineseTraditional,jdbcType=VARCHAR}, 
       #{pinyinName,jdbcType=VARCHAR}, #{latinName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
-      #{properties,jdbcType=VARCHAR}, #{meridians,jdbcType=VARCHAR}, #{function,jdbcType=VARCHAR}, 
+      #{properties,jdbcType=VARCHAR}, #{meridians,jdbcType=VARCHAR}, #{herbFunction,jdbcType=VARCHAR},
       #{classChinese,jdbcType=VARCHAR}, #{classEnglish,jdbcType=VARCHAR}, #{usePart,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -73,8 +73,8 @@
       <if test="meridians != null" >
         meridians,
       </if>
-      <if test="function != null" >
-        function,
+      <if test="herbFunction != null" >
+        herb_function,
       </if>
       <if test="classChinese != null" >
         class_chinese,
@@ -117,8 +117,8 @@
       <if test="meridians != null" >
         #{meridians,jdbcType=VARCHAR},
       </if>
-      <if test="function != null" >
-        #{function,jdbcType=VARCHAR},
+      <if test="herbFunction != null" >
+        #{herb_function,jdbcType=VARCHAR},
       </if>
       <if test="classChinese != null" >
         #{classChinese,jdbcType=VARCHAR},
@@ -161,8 +161,8 @@
       <if test="meridians != null" >
         meridians = #{meridians,jdbcType=VARCHAR},
       </if>
-      <if test="function != null" >
-        function = #{function,jdbcType=VARCHAR},
+      <if test="herbFunction != null" >
+        herb_function = #{herbFunction,jdbcType=VARCHAR},
       </if>
       <if test="classChinese != null" >
         class_chinese = #{classChinese,jdbcType=VARCHAR},
@@ -191,7 +191,7 @@
       english_name = #{englishName,jdbcType=VARCHAR},
       properties = #{properties,jdbcType=VARCHAR},
       meridians = #{meridians,jdbcType=VARCHAR},
-      function = #{function,jdbcType=VARCHAR},
+      herb_function = #{herbFunction,jdbcType=VARCHAR},
       class_chinese = #{classChinese,jdbcType=VARCHAR},
       class_english = #{classEnglish,jdbcType=VARCHAR},
       use_part = #{usePart,jdbcType=VARCHAR},

@@ -20,5 +20,5 @@ public interface FormulaHerbMapper {
 
     int updateByPrimaryKey(FormulaHerb record);
 
-    List<Map> selectFormulaCompose(String formulaName);
+    List<Map> selectFormulaCompose(String formulaId);
 }

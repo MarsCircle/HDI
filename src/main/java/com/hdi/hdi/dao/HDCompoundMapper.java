@@ -20,11 +20,11 @@ public interface HDCompoundMapper {
 
     int updateByPrimaryKey(HDCompound record);
 
-    String selectAcmpdId(String herbId);
+    List<String> selectAcmpdId(String herbDrugId);
 
     String selectAcmpdIdByDrugId(String drugId);
 
-    List<Map> selectId(String acmpdId);
+    List<String> selectId(String acmpdId);
 
 
     List<Map> selectByAcmpdId(String acmpId);

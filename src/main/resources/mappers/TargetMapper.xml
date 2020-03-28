@@ -4,8 +4,6 @@
   <resultMap id="BaseResultMap" type="com.hdi.hdi.pojo.Target" >
     <constructor >
       <idArg column="target_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="acmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="target_cmpd_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="gene_symbol" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="alias" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="uniprot_id" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -15,7 +13,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    target_id, acmpd_id, target_cmpd_id, gene_symbol, alias, uniprot_id, species, create_time, 
+    target_id,  gene_symbol, alias, uniprot_id, species, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -29,11 +27,11 @@
     where target_id = #{targetId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.hdi.hdi.pojo.Target" >
-    insert into hdi_target (target_id, acmpd_id, target_cmpd_id, 
+    insert into hdi_target (target_id,
       gene_symbol, alias, uniprot_id, 
       species, create_time, update_time
       )
-    values (#{targetId,jdbcType=VARCHAR}, #{acmpdId,jdbcType=VARCHAR}, #{targetCmpdId,jdbcType=VARCHAR}, 
+    values (#{targetId,jdbcType=VARCHAR},
       #{geneSymbol,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{uniprotId,jdbcType=VARCHAR}, 
       #{species,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -44,12 +42,7 @@
       <if test="targetId != null" >
         target_id,
       </if>
-      <if test="acmpdId != null" >
-        acmpd_id,
-      </if>
-      <if test="targetCmpdId != null" >
-        target_cmpd_id,
-      </if>
+
       <if test="geneSymbol != null" >
         gene_symbol,
       </if>
@@ -73,12 +66,7 @@
       <if test="targetId != null" >
         #{targetId,jdbcType=VARCHAR},
       </if>
-      <if test="acmpdId != null" >
-        #{acmpdId,jdbcType=VARCHAR},
-      </if>
-      <if test="targetCmpdId != null" >
-        #{targetCmpdId,jdbcType=VARCHAR},
-      </if>
+
       <if test="geneSymbol != null" >
         #{geneSymbol,jdbcType=VARCHAR},
       </if>
@@ -102,12 +90,7 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hdi.hdi.pojo.Target" >
     update hdi_target
     <set >
-      <if test="acmpdId != null" >
-        acmpd_id = #{acmpdId,jdbcType=VARCHAR},
-      </if>
-      <if test="targetCmpdId != null" >
-        target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR},
-      </if>
+
       <if test="geneSymbol != null" >
         gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
       </if>
@@ -131,8 +114,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hdi.hdi.pojo.Target" >
     update hdi_target
-    set acmpd_id = #{acmpdId,jdbcType=VARCHAR},
-      target_cmpd_id = #{targetCmpdId,jdbcType=VARCHAR},
+    set
       gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
       alias = #{alias,jdbcType=VARCHAR},
       uniprot_id = #{uniprotId,jdbcType=VARCHAR},
@@ -141,7 +123,6 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where target_id = #{targetId,jdbcType=VARCHAR}
   </update>
-
 
   <select id="selectGeneSymbol" parameterType="string" resultType="string">
     SELECT

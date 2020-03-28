@@ -19,9 +19,7 @@ public class HDInteraction {
 
     private String source;
 
-    private Date createTime;
 
-    private Date updateTime;
 
     public String getHerbName() {
         return herbName;
@@ -52,8 +50,7 @@ public class HDInteraction {
         this.evidences = evidences;
         this.level = level;
         this.source = source;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+
     }
 
     public HDInteraction() {
@@ -124,19 +121,4 @@ public class HDInteraction {
         this.source = source == null ? null : source.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }
